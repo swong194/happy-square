@@ -65,131 +65,56 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__circle_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__line_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__audio_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_js__ = __webpack_require__(2);
+
+
+
+
 
 const canvas = document.querySelector('canvas');
-
-const resizeCanvas = () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-};
-
-const randomColor = () => {
-  let color = 'rgba(';
-  for (let u = 0; u < 3; u++) {
-    color += `${Math.floor(Math.random() * 255)},`;
-  }
-  color += '1)';
-  return color;
-};
-
 const c = canvas.getContext('2d');
-
 const mouse = {};
 
-class Circle {
-  constructor(x, y, dx, dy, radius){
-    this.x = x;
-    this.y = y;
-    this.dx = dx;
-    this.dy = dy;
-    this.radius = radius;
-    this.color = randomColor();
-  }
-
-  draw(){
-    c.fillStyle = this.color;
-    c.strokeStyle = this.color;
-    c.beginPath();
-    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-    c.fill();
-    c.stroke();
-  }
-
-  update(){
-    if(this.x > innerWidth || this.x - this.radius < 0){
-      this.dx = -this.dx;
-    }
-    if (this.y + this.radius > innerHeight || this.y - this.radius < 0) {
-      this.dy = -this.dy;
-    }
-
-    this.x += this.dx;
-    this.y += this.dy;
-
-    if(mouse.x - this.x < 50
-      && mouse.x - this. x > -50
-      && mouse.y - this.y < 50
-      && mouse.y - this.y > -50
-      && this.radius < 60
-    ){
-      this.radius += 1;
-    } else if(this.radius > 10){
-      this.radius -= 1;
-    }
-
-    this.draw();
-  }
-}
-
-const circleArmy = [];
-
-const createCircleArmy = () => {
-  for (let i = 0; i < 500; i++) {
-    const radius = Math.random() * 10 + 20;
-    const x = Math.random() * innerWidth - (radius * 2);
-    const dx = Math.random() * 5;
-    const y = Math.random() * innerHeight - (radius * 2) + radius;
-    const dy = Math.random() * 5;
-    circleArmy.push(new Circle(x,y,dx,dy,radius));
-  }
-
-  for (let i = 0; i < circleArmy.length; i++) {
-    circleArmy[i].draw();
-  }
-};
-
+let animations = [];
 
 const animate = () => {
   requestAnimationFrame(animate);
   c.clearRect(0, 0, innerWidth, innerHeight);
-
-  for (var i = 0; i < circleArmy.length; i++) {
-    circleArmy[i].update();
+  for (var i = 0; i < animations.length; i++) {
+    animations[i].update();
+  }
+  if(animations.length > 50){
+    animations = animations.slice(10);
   }
 };
 
 const init = () => {
-  circleArmy = [];
-  createCircleArmy();
-};
-
-const setAudio = () => {
-  const audioList = document.getElementById('audio-list');
-  for (var i = 1; i < 28; i++) {
-    audioList.innerHTML += `{<audio id='${i}' src='./sound/${i}.wav'></audio>}`;
-  }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  createCircleArmy();
+  __WEBPACK_IMPORTED_MODULE_3__util_js__["c" /* resizeCanvas */](canvas);
+  Object(__WEBPACK_IMPORTED_MODULE_2__audio_js__["a" /* setAudio */])();
   animate();
-  resizeCanvas();
-  setAudio();
+  document.getElementById('backtrack').volume = .2;
 });
 
 window.addEventListener('resize', () => {
-  resizeCanvas();
+  __WEBPACK_IMPORTED_MODULE_3__util_js__["c" /* resizeCanvas */](canvas);
   init();
 });
 
-window.addEventListener('mousemove', (e) => {
-  mouse.x = e.x;
-  mouse.y = e.y;
-});
-
-window.addEventListener('click', e => {
-  const audio = document.querySelector('audio');
+window.addEventListener('click', (e) => {
+  const circle = new __WEBPACK_IMPORTED_MODULE_0__circle_js__["a" /* default */](c, e.x, e.y);
+  circle.draw();
+  animations.push(circle);
+  let audio = document.getElementById(`${Math.ceil(Math.random() * 27)}`);
   audio.currentTime = 0;
   audio.play();
 });
@@ -276,9 +201,12 @@ window.addEventListener('keydown', e => {
       audio = document.getElementById('26');
       break;
     default:
-      audio = document.getElementById('27');
+      audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
       break;
   }
+  const line = new __WEBPACK_IMPORTED_MODULE_1__line_js__["a" /* default */](c);
+  line.draw();
+  animations.push(line);
   audio.currentTime = 0;
   audio.play();
 });
@@ -293,6 +221,134 @@ window.addEventListener('keydown', e => {
 
 
 let hello;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_js__ = __webpack_require__(2);
+
+
+class Circle {
+  constructor(c,x,y){
+    this.c = c;
+    this.x = x;
+    this.y = y;
+    this.radius = Math.random() * 10 + 10;
+    this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["a" /* randomColor */]();
+    this.width = Math.random() * 10 + 10;
+  }
+
+  draw(){
+    this.c.lineWidth = this.width;
+    this.c.beginPath();
+    this.c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+    this.c.strokeStyle = this.color;
+    this.c.stroke();
+  }
+
+  update(){
+    this.radius += 25;
+    this.draw();
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Circle);
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const randomColor = () => {
+  let color = 'rgba(';
+  for (let u = 0; u < 3; u++) {
+    color += `${Math.floor(Math.random() * 255)},`;
+  }
+  color += '1)';
+  return color;
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = randomColor;
+
+
+const randomStart = () => {
+  let startOne = [-10, Math.floor(Math.random() * window.innerHeight)];
+  let startTwo = [Math.floor(Math.random() * window.innerWidth), -10];
+
+  return [startOne, startTwo][Math.floor(Math.random() * 2)];
+};
+/* harmony export (immutable) */ __webpack_exports__["b"] = randomStart;
+
+
+const resizeCanvas = (canvas) => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+};
+/* harmony export (immutable) */ __webpack_exports__["c"] = resizeCanvas;
+
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const setAudio = () => {
+  const audioList = document.getElementById('audio-list');
+  for (let i = 1; i < 28; i++) {
+    audioList.innerHTML += `<audio id='${i}' src='./sound/${i}.wav'></audio>`;
+  }
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = setAudio;
+
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_js__ = __webpack_require__(2);
+
+
+class Line{
+  constructor(c){
+    let start = __WEBPACK_IMPORTED_MODULE_0__util_js__["b" /* randomStart */]();
+    this.x = start[0];
+    this.y = start[1];
+    this.movex = this.x;
+    this.movey = this.y;
+    this.c = c;
+    this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["a" /* randomColor */]();
+    this.width = Math.random() * 25 + 20;
+  }
+
+  draw(){
+    this.c.beginPath();
+    this.c.moveTo(this.x, this.y);
+    this.c.lineTo(this.movex, this.movey);
+    this.c.strokeStyle = this.color;
+    this.c.lineWidth = this.width;
+    this.c.stroke();
+  }
+
+  update(){
+    if(this.movex > window.innerWidth * 1.25 || this.movey > window.innerHeight * 1.25){
+      this.x += 30;
+      this.y += 30;
+    } else {
+      this.movex += 40;
+      this.movey += 40;
+    }
+    this.draw();
+  }
+}
+
+
+/* harmony default export */ __webpack_exports__["a"] = (Line);
 
 
 /***/ })
