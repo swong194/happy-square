@@ -19,7 +19,7 @@ Webpack to bundle dependent scripts
 # Timeline
 
 ## Day 1 
--  Learn basics of Canvad and obtain audio files 
+-  Learn basics of Canvas and obtain audio files 
 -  Set up webpack config and index.html 
 -  Set up canvas
 
