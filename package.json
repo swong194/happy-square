@@ -1,0 +1,23 @@
+{
+  "name": "happy-square",
+  "version": "1.0.0",
+  "description": "Happy Square is a interactive visual and audio square! Click anywhere on the screen and see what cool suprises await!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swong194/happy-square.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/swong194/happy-square/issues"
+  },
+  "homepage": "https://github.com/swong194/happy-square#readme",
+  "dependencies": {
+    "babel-preset-env": "^1.6.1"
+  }
+}

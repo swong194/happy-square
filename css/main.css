@@ -1,0 +1,8 @@
+#landing-overlay{
+  position: absolute;
+  display: none;
+}
+
+canvas{
+  background-color: lightgrey;
+}
