@@ -68,6 +68,7 @@
 /***/ (function(module, exports) {
 
 const canvas = document.querySelector('canvas');
+
 const resizeCanvas = () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -82,26 +83,9 @@ const randomColor = () => {
   return color;
 };
 
-
 const c = canvas.getContext('2d');
 
 const mouse = {};
-
-// c.fillStyle = 'rgba(255,10,10,1)';
-// c.fillRect(100,100,100,100);
-//
-// c.beginPath();
-// c.moveTo(200,200);
-// c.lineTo(500,60);
-// c.lineTo(100,200);
-// c.strokeStyle = 'blue';
-// c.stroke();
-
-
-
-// for (var i = 0; i < 200 ; i++) {
-//
-// }
 
 class Circle {
   constructor(x, y, dx, dy, radius){
@@ -180,10 +164,18 @@ const init = () => {
   createCircleArmy();
 };
 
+const setAudio = () => {
+  const audioList = document.getElementById('audio-list');
+  for (var i = 1; i < 28; i++) {
+    audioList.innerHTML += `{<audio id='${i}' src='./sound/${i}.wav'></audio>}`;
+  }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   createCircleArmy();
   animate();
   resizeCanvas();
+  setAudio();
 });
 
 window.addEventListener('resize', () => {
