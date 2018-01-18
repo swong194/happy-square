@@ -10,15 +10,32 @@ const c = canvas.getContext('2d');
 const mouse = {};
 
 let animations = [];
+let balls = [];
 
 const animate = () => {
   requestAnimationFrame(animate);
   c.clearRect(0, 0, innerWidth, innerHeight);
-  for (var i = 0; i < animations.length; i++) {
+  for (let i = 0; i < animations.length; i++) {
     animations[i].update();
   }
-  if(animations.length > 50){
-    animations = animations.slice(10);
+
+  for (let i = 0; i < balls.length - 1; i++) {
+    for (let j = i+1; j < balls.length; j++) {
+      if(Util.ballCollide(balls[i],balls[j])){
+        Util.newVelocities(balls[i],balls[j]);
+      }
+    }
+  }
+
+  for (let i = 0; i < balls.length; i++) {
+    balls[i].update();
+  }
+
+  if(animations.length > 15 ){
+    animations = animations.slice(8);
+  }
+  if(balls.length > 20){
+    balls = balls.slice(10);
   }
 };
 
@@ -46,7 +63,7 @@ window.addEventListener('click', (e) => {
   for (let i = 0; i < 2; i++) {
     let ball = new Ball(c, e.x, e.y);
     ball.draw();
-    animations.push(ball);
+    balls.push(ball);
   }
   let audio = document.getElementById(`${Math.ceil(Math.random() * 27)}`);
   audio.currentTime = 0;

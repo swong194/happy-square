@@ -39,24 +39,26 @@ class Ball{
 
   update(){
     if(this.y + this.radius + this.dy > window.innerHeight){
-      this.dy = -this.dy * 0.9;
+      this.dy = -this.dy * 0.98;
     } else {
       this.dy += this.gravity;
     }
 
     if(this.x + this.radius + this.dx > window.innerWidth || this.x - this.radius + this.dx < 0){
-      this.dx = -this.dx * 0.7;
+      this.dx = -this.dx * 0.8;
     }
 
     if(this.y < window.innerHeight){
       this.y += this.dy;
       this.x += this.dx;
-    } else {
-      this.y;
-      this.x;
     }
 
     this.draw();
+  }
+
+  collide(){
+    this.dy = -this.dy;
+    this.dx = -this.dx;
   }
 
 }
