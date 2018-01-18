@@ -38,7 +38,7 @@ class Ball{
   }
 
   update(){
-    if(this.y + this.radius + this.dy > window.innerHeight){
+    if(this.y + this.radius + this.dy > window.innerHeight || this.y - this.radius + this.dy < 0){
       this.dy = -this.dy * 0.98;
     } else {
       this.dy += this.gravity;

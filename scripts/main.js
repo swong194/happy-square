@@ -65,9 +65,18 @@ window.addEventListener('click', (e) => {
     ball.draw();
     balls.push(ball);
   }
+
   let audio = document.getElementById(`${Math.ceil(Math.random() * 27)}`);
   audio.currentTime = 0;
   audio.play();
+});
+
+window.addEventListener('mousemove', e => {
+  for (let i = 0; i < balls.length; i++) {
+    if(Util.getDistance(balls[i].x, balls[i].y, e.x, e.y) <= 50){
+      balls[i].dy -= 10;
+    }
+  }
 });
 
 window.addEventListener('keydown', e => {

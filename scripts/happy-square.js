@@ -76,7 +76,7 @@ const randomColor = () => {
   color += '1)';
   return color;
 };
-/* harmony export (immutable) */ __webpack_exports__["e"] = randomColor;
+/* harmony export (immutable) */ __webpack_exports__["f"] = randomColor;
 
 
 const randomStart = () => {
@@ -85,7 +85,7 @@ const randomStart = () => {
 
   return [startOne, startTwo][Math.floor(Math.random() * 2)];
 };
-/* harmony export (immutable) */ __webpack_exports__["f"] = randomStart;
+/* harmony export (immutable) */ __webpack_exports__["g"] = randomStart;
 
 
 const randInArr = arr => {
@@ -97,13 +97,13 @@ const randInArr = arr => {
 const randInPos = () => {
   return randInArr([-1,1]);
 };
-/* harmony export (immutable) */ __webpack_exports__["c"] = randInPos;
+/* harmony export (immutable) */ __webpack_exports__["d"] = randInPos;
 
 
 const randInRange = (min, max) => {
   return Math.floor(Math.random() * (max-min) + min);
 };
-/* harmony export (immutable) */ __webpack_exports__["d"] = randInRange;
+/* harmony export (immutable) */ __webpack_exports__["e"] = randInRange;
 
 
 const pythag = (x,y) => {
@@ -118,7 +118,7 @@ const getDistance = (x1,y1,x2,y2) => {
 
   return pythag(xdist,ydist);
 };
-/* unused harmony export getDistance */
+/* harmony export (immutable) */ __webpack_exports__["b"] = getDistance;
 
 
 const vel = (ball) => {
@@ -150,7 +150,7 @@ const newVelocities = (ball1, ball2) => {
   ball2.dy = Math.floor(2*ball1.radius*yVel)/(sumMass) * randInPos();
 
 };
-/* harmony export (immutable) */ __webpack_exports__["b"] = newVelocities;
+/* harmony export (immutable) */ __webpack_exports__["c"] = newVelocities;
 
 
 const ballCollide = (ball1, ball2) => {
@@ -168,7 +168,7 @@ const resizeCanvas = (canvas) => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 };
-/* harmony export (immutable) */ __webpack_exports__["g"] = resizeCanvas;
+/* harmony export (immutable) */ __webpack_exports__["h"] = resizeCanvas;
 
 
 
@@ -208,7 +208,7 @@ const animate = () => {
   for (let i = 0; i < balls.length - 1; i++) {
     for (let j = i+1; j < balls.length; j++) {
       if(__WEBPACK_IMPORTED_MODULE_5__util_js__["a" /* ballCollide */](balls[i],balls[j])){
-        __WEBPACK_IMPORTED_MODULE_5__util_js__["b" /* newVelocities */](balls[i],balls[j]);
+        __WEBPACK_IMPORTED_MODULE_5__util_js__["c" /* newVelocities */](balls[i],balls[j]);
       }
     }
   }
@@ -230,14 +230,14 @@ const init = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  __WEBPACK_IMPORTED_MODULE_5__util_js__["g" /* resizeCanvas */](canvas);
+  __WEBPACK_IMPORTED_MODULE_5__util_js__["h" /* resizeCanvas */](canvas);
   Object(__WEBPACK_IMPORTED_MODULE_4__audio_js__["a" /* setAudio */])();
   animate();
   document.getElementById('backtrack').volume = .2;
 });
 
 window.addEventListener('resize', () => {
-  __WEBPACK_IMPORTED_MODULE_5__util_js__["g" /* resizeCanvas */](canvas);
+  __WEBPACK_IMPORTED_MODULE_5__util_js__["h" /* resizeCanvas */](canvas);
   init();
 });
 
@@ -251,9 +251,18 @@ window.addEventListener('click', (e) => {
     ball.draw();
     balls.push(ball);
   }
+
   let audio = document.getElementById(`${Math.ceil(Math.random() * 27)}`);
   audio.currentTime = 0;
   audio.play();
+});
+
+window.addEventListener('mousemove', e => {
+  for (let i = 0; i < balls.length; i++) {
+    if(__WEBPACK_IMPORTED_MODULE_5__util_js__["b" /* getDistance */](balls[i].x, balls[i].y, e.x, e.y) <= 50){
+      balls[i].dy -= 10;
+    }
+  }
 });
 
 window.addEventListener('keydown', e => {
@@ -373,9 +382,9 @@ class Circle {
     this.c = c;
     this.x = x;
     this.y = y;
-    this.radius = __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInRange */](10,50);
-    this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randomColor */]();
-    this.width = __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInRange */](2,20);
+    this.radius = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](10,50);
+    this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randomColor */]();
+    this.width = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](2,20);
   }
 
   draw(){
@@ -405,13 +414,13 @@ class Circle {
 
 class Line{
   constructor(c){
-    let start = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randomStart */]();
+    let start = __WEBPACK_IMPORTED_MODULE_0__util_js__["g" /* randomStart */]();
     this.x = start[0];
     this.y = start[1];
     this.movex = this.x;
     this.movey = this.y;
     this.c = c;
-    this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randomColor */]();
+    this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randomColor */]();
     this.width = Math.random() * 10 + 20;
   }
 
@@ -490,12 +499,12 @@ class Ripple{
 class Ball{
   constructor(c, x, y){
     this.c = c;
-    this.radius = __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInRange */](5,50);
-    this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randomColor */]();
-    this.dy = __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInRange */](10,20) * __WEBPACK_IMPORTED_MODULE_0__util_js__["c" /* randInPos */]();
-    this.dx = __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInRange */](10,20) * __WEBPACK_IMPORTED_MODULE_0__util_js__["c" /* randInPos */]();
+    this.radius = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](5,50);
+    this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randomColor */]();
+    this.dy = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](10,20) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
+    this.dx = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](10,20) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
 
-    let xpos = x + __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInRange */](0,100) * __WEBPACK_IMPORTED_MODULE_0__util_js__["c" /* randInPos */]();
+    let xpos = x + __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](0,100) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
 
     if(xpos - this.radius + this.dx < 0){
       xpos = Math.abs(this.radius + this.dx) * 2;
@@ -503,7 +512,7 @@ class Ball{
       xpos = Math.abs(xpos-this.radius) * 2;
     }
 
-    let ypos = y + __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInRange */](0,100) * __WEBPACK_IMPORTED_MODULE_0__util_js__["c" /* randInPos */]();
+    let ypos = y + __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](0,100) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
     if(ypos - this.radius + this.dy < 0){
       ypos = Math.abs(this.radius + this.dy) * 2;
     } else if(ypos + this.radius + this.dy > window.innerHeight){
@@ -511,7 +520,7 @@ class Ball{
     }
     this.x = xpos;
     this.y = ypos;
-    this.gravity = __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInRange */](1,2);
+    this.gravity = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](1,2);
   }
 
   draw(){
@@ -525,7 +534,7 @@ class Ball{
   }
 
   update(){
-    if(this.y + this.radius + this.dy > window.innerHeight){
+    if(this.y + this.radius + this.dy > window.innerHeight || this.y - this.radius + this.dy < 0){
       this.dy = -this.dy * 0.98;
     } else {
       this.dy += this.gravity;
