@@ -4,5 +4,5 @@
 }
 
 canvas{
-  background-color: lightgrey;
+  background: linear-gradient(rgba(255,240,191,1), rgba(255,239,203,1));
 }

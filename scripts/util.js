@@ -14,6 +14,18 @@ export const randomStart = () => {
   return [startOne, startTwo][Math.floor(Math.random() * 2)];
 };
 
+export const randInArr = arr => {
+  return arr[Math.floor(Math.random() * arr.length)];
+};
+
+export const randInPos = () => {
+  return randInArr([-1,1]);
+};
+
+export const randInRange = (min, max) => {
+  return Math.floor(Math.random() * (max-min) + min);
+};
+
 export const resizeCanvas = (canvas) => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;

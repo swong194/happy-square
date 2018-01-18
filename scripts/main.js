@@ -1,5 +1,7 @@
 import Circle from './circle.js';
 import Line from './line.js';
+import Ripple from './ripple.js';
+import Ball from './ball.js';
 import { setAudio } from './audio.js';
 import * as Util from './util.js';
 
@@ -21,6 +23,7 @@ const animate = () => {
 };
 
 const init = () => {
+  animations =[];
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -39,6 +42,12 @@ window.addEventListener('click', (e) => {
   const circle = new Circle(c, e.x, e.y);
   circle.draw();
   animations.push(circle);
+
+  for (let i = 0; i < 2; i++) {
+    let ball = new Ball(c, e.x, e.y);
+    ball.draw();
+    animations.push(ball);
+  }
   let audio = document.getElementById(`${Math.ceil(Math.random() * 27)}`);
   audio.currentTime = 0;
   audio.play();

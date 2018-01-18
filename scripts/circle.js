@@ -5,9 +5,9 @@ class Circle {
     this.c = c;
     this.x = x;
     this.y = y;
-    this.radius = Math.random() * 10 + 10;
+    this.radius = Util.randInRange(10,50);
     this.color = Util.randomColor();
-    this.width = Math.random() * 10 + 10;
+    this.width = Util.randInRange(2,20);
   }
 
   draw(){

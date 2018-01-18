@@ -9,7 +9,7 @@ class Line{
     this.movey = this.y;
     this.c = c;
     this.color = Util.randomColor();
-    this.width = Math.random() * 25 + 20;
+    this.width = Math.random() * 10 + 20;
   }
 
   draw(){
@@ -22,7 +22,8 @@ class Line{
   }
 
   update(){
-    if(this.movex > window.innerWidth * 1.25 || this.movey > window.innerHeight * 1.25){
+    if(this.movex > window.innerWidth * 1.25
+      || this.movey > window.innerHeight * 1.25){
       this.x += 30;
       this.y += 30;
     } else {
