@@ -7,16 +7,29 @@ import * as Util from './util.js';
 
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
+c.globalAlpha = 0.1;
+let g = Util.randInRange(1,2);
+
 const mouse = {};
 
 let animations = [];
 let balls = [];
+
+const setGravity = () => {
+  for (var i = 0; i < balls.length; i++) {
+    balls[i].gravity = g;
+  }
+};
 
 const animate = () => {
   requestAnimationFrame(animate);
   c.clearRect(0, 0, innerWidth, innerHeight);
   for (let i = 0; i < animations.length; i++) {
     animations[i].update();
+  }
+
+  for (let i = 0; i < balls.length; i++) {
+    balls[i].update();
   }
 
   for (let i = 0; i < balls.length - 1; i++) {
@@ -27,14 +40,11 @@ const animate = () => {
     }
   }
 
-  for (let i = 0; i < balls.length; i++) {
-    balls[i].update();
-  }
 
   if(animations.length > 15 ){
     animations = animations.slice(8);
   }
-  if(balls.length > 20){
+  if(balls.length > 80){
     balls = balls.slice(10);
   }
 };
@@ -60,8 +70,8 @@ window.addEventListener('click', (e) => {
   circle.draw();
   animations.push(circle);
 
-  for (let i = 0; i < 2; i++) {
-    let ball = new Ball(c, e.x, e.y);
+  for (let i = 0; i < 3; i++) {
+    let ball = new Ball(c, e.x, e.y, g);
     ball.draw();
     balls.push(ball);
   }
@@ -73,8 +83,13 @@ window.addEventListener('click', (e) => {
 
 window.addEventListener('mousemove', e => {
   for (let i = 0; i < balls.length; i++) {
-    if(Util.getDistance(balls[i].x, balls[i].y, e.x, e.y) <= 50){
-      balls[i].dy -= 10;
+    if(Util.getDistance(balls[i].x, balls[i].y, e.x, e.y) - balls[i].radius <= 50){
+      balls[i].dy -= 5;
+      balls[i].dx = Math.ceil(balls[i].dx * 1.1);
+      if(balls[i].y + balls[i].radius > window.innerHeight){
+        balls[i].y = window.innerHeight - (balls[i].radius) * 2;
+        balls[i].dx = Util.randInRange(1,1.5) * Util.randInPos();
+      }
     }
   }
 });
@@ -160,8 +175,31 @@ window.addEventListener('keydown', e => {
     case 86:
       audio = document.getElementById('26');
       break;
+    case 32:
+      audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
+      break;
+    case 188:
+      audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
+      g = -g;
+      setGravity();
+      break;
+    case 191:
+      audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
+      if(g !== 0){
+        g = 0;
+      } else {
+        g = Util.randInRange(1,2);
+      }
+      setGravity();
+      break;
     default:
       audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
+      for (let i = 0; i < balls.length; i++) {
+        balls[i].y = window.innerHeight / 2;
+        balls[i].x = Util.randInRange(0 + balls[i].radius, window.innerWidth - balls[i].radius);
+        balls[i].dx = Util.randInRange(10,20) * Util.randInPos();
+        balls[i].dy = Util.randInRange(5,10) * Util.randInPos();
+      }
       break;
   }
   const line = new Line(c);

@@ -1,12 +1,12 @@
 import * as Util from './util.js';
 
 class Ball{
-  constructor(c, x, y){
+  constructor(c, x, y, g){
     this.c = c;
-    this.radius = Util.randInRange(5,50);
+    this.radius = Util.randInRange(10,30);
     this.color = Util.randomColor();
-    this.dy = Util.randInRange(10,20) * Util.randInPos();
-    this.dx = Util.randInRange(10,20) * Util.randInPos();
+    this.dy = Util.randInRange(2,5) * Util.randInPos();
+    this.dx = Util.randInRange(10,15) * Util.randInPos();
 
     let xpos = x + Util.randInRange(0,100) * Util.randInPos();
 
@@ -24,7 +24,7 @@ class Ball{
     }
     this.x = xpos;
     this.y = ypos;
-    this.gravity = Util.randInRange(1,2);
+    this.gravity = g;
   }
 
   draw(){
@@ -39,19 +39,34 @@ class Ball{
 
   update(){
     if(this.y + this.radius + this.dy > window.innerHeight || this.y - this.radius + this.dy < 0){
-      this.dy = -this.dy * 0.98;
+      this.dy = -(this.dy * .9);
     } else {
       this.dy += this.gravity;
     }
 
     if(this.x + this.radius + this.dx > window.innerWidth || this.x - this.radius + this.dx < 0){
-      this.dx = -this.dx * 0.8;
+      this.dx = -(this.dx * .7);
     }
 
-    if(this.y < window.innerHeight){
+    if(this.x + this.radius > window.innerWidth){
+      this.x = window.innerWidth - this.radius;
+    } else if(this.x - this.radius < 0){
+      this.x = this.radius;
+    }
+
+    if(this.y + this.radius <= window.innerHeight && this.y - this.radius >= 0){
       this.y += this.dy;
       this.x += this.dx;
+    } else if (this.y + this.radius > window.innerHeight){
+      this.y = window.innerHeight - (this.radius);
+      this.dy = 0;
+      this.x += this.dx;
+    } else if (this.y - this.radius < 0){
+      this.y = (this.radius);
+      this.dy = 0;
+      this.x += this.dx;
     }
+
 
     this.draw();
   }

@@ -139,15 +139,111 @@ const resultVel = (v1, v2, m1, m2) => {
 /* unused harmony export resultVel */
 
 
-const newVelocities = (ball1, ball2) => {
-  const sumMass = ball1.radius + ball2.radius;
-  const xVel = resultVel(ball1.dx, ball2.dx, ball1.radius, ball2.radius);
-  ball1.dx = Math.floor((ball1.radius - ball2.radius) * xVel / (sumMass)) * randInPos();
-  ball2.dx = Math.floor(2*ball1.radius*xVel)/(sumMass) * randInPos();
+const addVector = (v1, v2) => {
+  const resultVector = {};
+  resultVector.x = v1.x + v2.x;
+  resultVector.y = v1.y + v2.y;
+  return resultVector;
+};
+/* unused harmony export addVector */
 
-  const yVel = resultVel(ball1.dy, ball2.dy, ball1.radius, ball2.radius);
-  ball1.dy = Math.floor((ball1.radius - ball2.radius) * yVel) / (sumMass) * randInPos();
-  ball2.dy = Math.floor(2*ball1.radius*yVel)/(sumMass) * randInPos();
+
+const subVector = (v1, v2) => {
+  const resultVector = {};
+  resultVector.x = v2.x - v1.x;
+  resultVector.y = v2.y - v1.y;
+  return resultVector;
+};
+/* unused harmony export subVector */
+
+
+const dotProd = (v1, v2) => {
+  return ((v1.x * v2.x )+ (v1.y * v2.y));
+};
+/* unused harmony export dotProd */
+
+
+const multVector = (m, v) => {
+  return {x: m * v.x, y: m * v.y};
+};
+/* unused harmony export multVector */
+
+
+const projection = (v, p) => {
+  return multVector((dotProd(v,p)/dotProd(p,p)),p);
+};
+/* unused harmony export projection */
+
+
+const magnitude = (v) => {
+  return Math.sqrt(dotProd(v,v));
+};
+/* unused harmony export magnitude */
+
+
+const unitVector = v => {
+  return multVector((1/magnitude(v)),v);
+};
+/* unused harmony export unitVector */
+
+
+const faster = (v1, v2) => {
+  if((v1 < 0 && v2 < 0) || (v1 > 0 && v2 > 0)){
+    if((v1 > v2) || (v2 < v1)){
+      return true;
+    }
+  }
+  return false;
+};
+/* unused harmony export faster */
+
+
+const newVelocities = (ball1, ball2) => {
+  const m1 = ball1.radius;
+  const m2 = ball2.radius;
+  const sumM = m1+m2;
+
+  const p1 = {x:ball1.x, y:ball1.y};
+  const p2 = {x:ball2.x, y:ball2.y};
+
+  //velocity vectors
+  const v1 = {x:ball1.dx, y:ball1.dy};
+  const v2 = {x:ball2.dx, y:ball2.dy};
+
+  const projV = subVector(p1,p2);
+
+  //velocity vectors in impact direction
+  const projV1 = projection(v1, projV);
+  const projV2 = projection(v2, projV);
+
+  //direction based on projected velocities along impact direction
+  const dirV1 = projV1.x/(projV.x);
+  const dirV2 = projV2.x/(projV.x);
+
+  if((dirV1 >= 0 && dirV2 < 0) || (dirV1 > 0 && dirV2 <= 0) || faster(dirV1, dirV2)){
+    const perpV1 = subVector(v1, projV1);
+    const perpV2 = subVector(v2, projV2);
+
+    const vMag1 = magnitude(projV1) * (dirV1/Math.abs(dirV1));
+    const vMag2 = magnitude(projV2) * (dirV2/Math.abs(dirV2));
+
+    const momentum = m1 * vMag1 + m2 * vMag2;
+
+    const uMag1 = ((2 * momentum) / sumM) - vMag1;
+    const uMag2 = (momentum - (m1 * uMag1))/m2;
+
+    const unitProjV = unitVector(projV);
+
+    //add perpendicular vectors
+    const u1 = addVector(multVector(uMag1, unitProjV), perpV1);
+    const u2 = addVector(multVector(uMag2, unitProjV), perpV2);
+
+    ball1.dx = u1.x;
+    ball1.dy = u1.y;
+
+    ball2.dx = u2.x;
+    ball2.dy = u2.y;
+  }
 
 };
 /* harmony export (immutable) */ __webpack_exports__["c"] = newVelocities;
@@ -193,16 +289,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
+c.globalAlpha = 0.1;
+let g = __WEBPACK_IMPORTED_MODULE_5__util_js__["e" /* randInRange */](1,2);
+
 const mouse = {};
 
 let animations = [];
 let balls = [];
+
+const setGravity = () => {
+  for (var i = 0; i < balls.length; i++) {
+    balls[i].gravity = g;
+  }
+};
 
 const animate = () => {
   requestAnimationFrame(animate);
   c.clearRect(0, 0, innerWidth, innerHeight);
   for (let i = 0; i < animations.length; i++) {
     animations[i].update();
+  }
+
+  for (let i = 0; i < balls.length; i++) {
+    balls[i].update();
   }
 
   for (let i = 0; i < balls.length - 1; i++) {
@@ -213,14 +322,11 @@ const animate = () => {
     }
   }
 
-  for (let i = 0; i < balls.length; i++) {
-    balls[i].update();
-  }
 
   if(animations.length > 15 ){
     animations = animations.slice(8);
   }
-  if(balls.length > 20){
+  if(balls.length > 80){
     balls = balls.slice(10);
   }
 };
@@ -246,8 +352,8 @@ window.addEventListener('click', (e) => {
   circle.draw();
   animations.push(circle);
 
-  for (let i = 0; i < 2; i++) {
-    let ball = new __WEBPACK_IMPORTED_MODULE_3__ball_js__["a" /* default */](c, e.x, e.y);
+  for (let i = 0; i < 3; i++) {
+    let ball = new __WEBPACK_IMPORTED_MODULE_3__ball_js__["a" /* default */](c, e.x, e.y, g);
     ball.draw();
     balls.push(ball);
   }
@@ -259,8 +365,13 @@ window.addEventListener('click', (e) => {
 
 window.addEventListener('mousemove', e => {
   for (let i = 0; i < balls.length; i++) {
-    if(__WEBPACK_IMPORTED_MODULE_5__util_js__["b" /* getDistance */](balls[i].x, balls[i].y, e.x, e.y) <= 50){
-      balls[i].dy -= 10;
+    if(__WEBPACK_IMPORTED_MODULE_5__util_js__["b" /* getDistance */](balls[i].x, balls[i].y, e.x, e.y) - balls[i].radius <= 50){
+      balls[i].dy -= 5;
+      balls[i].dx = Math.ceil(balls[i].dx * 1.1);
+      if(balls[i].y + balls[i].radius > window.innerHeight){
+        balls[i].y = window.innerHeight - (balls[i].radius) * 2;
+        balls[i].dx = __WEBPACK_IMPORTED_MODULE_5__util_js__["e" /* randInRange */](1,1.5) * __WEBPACK_IMPORTED_MODULE_5__util_js__["d" /* randInPos */]();
+      }
     }
   }
 });
@@ -346,8 +457,31 @@ window.addEventListener('keydown', e => {
     case 86:
       audio = document.getElementById('26');
       break;
+    case 32:
+      audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
+      break;
+    case 188:
+      audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
+      g = -g;
+      setGravity();
+      break;
+    case 191:
+      audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
+      if(g !== 0){
+        g = 0;
+      } else {
+        g = __WEBPACK_IMPORTED_MODULE_5__util_js__["e" /* randInRange */](1,2);
+      }
+      setGravity();
+      break;
     default:
       audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
+      for (let i = 0; i < balls.length; i++) {
+        balls[i].y = window.innerHeight / 2;
+        balls[i].x = __WEBPACK_IMPORTED_MODULE_5__util_js__["e" /* randInRange */](0 + balls[i].radius, window.innerWidth - balls[i].radius);
+        balls[i].dx = __WEBPACK_IMPORTED_MODULE_5__util_js__["e" /* randInRange */](10,20) * __WEBPACK_IMPORTED_MODULE_5__util_js__["d" /* randInPos */]();
+        balls[i].dy = __WEBPACK_IMPORTED_MODULE_5__util_js__["e" /* randInRange */](5,10) * __WEBPACK_IMPORTED_MODULE_5__util_js__["d" /* randInPos */]();
+      }
       break;
   }
   const line = new __WEBPACK_IMPORTED_MODULE_1__line_js__["a" /* default */](c);
@@ -497,12 +631,12 @@ class Ripple{
 
 
 class Ball{
-  constructor(c, x, y){
+  constructor(c, x, y, g){
     this.c = c;
-    this.radius = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](5,50);
+    this.radius = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](10,30);
     this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randomColor */]();
-    this.dy = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](10,20) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
-    this.dx = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](10,20) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
+    this.dy = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](2,5) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
+    this.dx = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](10,15) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
 
     let xpos = x + __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](0,100) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
 
@@ -520,7 +654,7 @@ class Ball{
     }
     this.x = xpos;
     this.y = ypos;
-    this.gravity = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](1,2);
+    this.gravity = g;
   }
 
   draw(){
@@ -535,19 +669,34 @@ class Ball{
 
   update(){
     if(this.y + this.radius + this.dy > window.innerHeight || this.y - this.radius + this.dy < 0){
-      this.dy = -this.dy * 0.98;
+      this.dy = -(this.dy * .9);
     } else {
       this.dy += this.gravity;
     }
 
     if(this.x + this.radius + this.dx > window.innerWidth || this.x - this.radius + this.dx < 0){
-      this.dx = -this.dx * 0.8;
+      this.dx = -(this.dx * .7);
     }
 
-    if(this.y < window.innerHeight){
+    if(this.x + this.radius > window.innerWidth){
+      this.x = window.innerWidth - this.radius;
+    } else if(this.x - this.radius < 0){
+      this.x = this.radius;
+    }
+
+    if(this.y + this.radius <= window.innerHeight && this.y - this.radius >= 0){
       this.y += this.dy;
       this.x += this.dx;
+    } else if (this.y + this.radius > window.innerHeight){
+      this.y = window.innerHeight - (this.radius);
+      this.dy = 0;
+      this.x += this.dx;
+    } else if (this.y - this.radius < 0){
+      this.y = (this.radius);
+      this.dy = 0;
+      this.x += this.dx;
     }
+
 
     this.draw();
   }
