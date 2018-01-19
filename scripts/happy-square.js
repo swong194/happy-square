@@ -348,9 +348,11 @@ window.addEventListener('resize', () => {
 });
 
 window.addEventListener('click', (e) => {
-  const circle = new __WEBPACK_IMPORTED_MODULE_0__circle_js__["a" /* default */](c, e.x, e.y);
-  circle.draw();
-  animations.push(circle);
+  for (let i = 0; i < 2; i++) {
+    const circle = new __WEBPACK_IMPORTED_MODULE_0__circle_js__["a" /* default */](c, e.x, e.y);
+    circle.draw();
+    animations.push(circle);
+  }
 
   for (let i = 0; i < 3; i++) {
     let ball = new __WEBPACK_IMPORTED_MODULE_3__ball_js__["a" /* default */](c, e.x, e.y, g);
@@ -465,6 +467,11 @@ window.addEventListener('keydown', e => {
       g = -g;
       setGravity();
       break;
+    case 186:
+      audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
+      balls = [];
+      animations = [];
+      break;
     case 191:
       audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
       if(g !== 0){
@@ -514,8 +521,8 @@ let hello;
 class Circle {
   constructor(c,x,y){
     this.c = c;
-    this.x = x;
-    this.y = y;
+    this.x = x + __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](0,100) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
+    this.y = y + __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](0,100) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
     this.radius = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](10,50);
     this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randomColor */]();
     this.width = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](2,20);
@@ -660,30 +667,30 @@ class Ball{
   draw(){
     this.c.beginPath();
     this.c.lineWidth = 1;
-    this.c.strokeStyle = 'black';
     this.c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+    this.c.save();
+    this.c.globalAplha= 0.2;
     this.c.fillStyle = this.color;
     this.c.fill();
+    this.c.restore();
+    this.c.strokeStyle = 'black';
     this.c.stroke();
   }
 
   update(){
     if(this.y + this.radius + this.dy > window.innerHeight || this.y - this.radius + this.dy < 0){
-      this.dy = -(this.dy * .9);
+      this.dy = -(this.dy * .95);
     } else {
       this.dy += this.gravity;
     }
-
     if(this.x + this.radius + this.dx > window.innerWidth || this.x - this.radius + this.dx < 0){
-      this.dx = -(this.dx * .7);
+      this.dx = -(this.dx * .8);
     }
-
     if(this.x + this.radius > window.innerWidth){
       this.x = window.innerWidth - this.radius;
     } else if(this.x - this.radius < 0){
       this.x = this.radius;
     }
-
     if(this.y + this.radius <= window.innerHeight && this.y - this.radius >= 0){
       this.y += this.dy;
       this.x += this.dx;
@@ -696,8 +703,6 @@ class Ball{
       this.dy = 0;
       this.x += this.dx;
     }
-
-
     this.draw();
   }
 

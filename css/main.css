@@ -5,4 +5,7 @@
 
 canvas{
   background: linear-gradient(rgba(255,240,191,1), rgba(255,239,203,1));
+  background-image: url('../images/bear.jpg');
+  background-position: center;
+  background-size: cover;
 }

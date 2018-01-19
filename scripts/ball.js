@@ -30,30 +30,30 @@ class Ball{
   draw(){
     this.c.beginPath();
     this.c.lineWidth = 1;
-    this.c.strokeStyle = 'black';
     this.c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+    this.c.save();
+    this.c.globalAplha= 0.2;
     this.c.fillStyle = this.color;
     this.c.fill();
+    this.c.restore();
+    this.c.strokeStyle = 'black';
     this.c.stroke();
   }
 
   update(){
     if(this.y + this.radius + this.dy > window.innerHeight || this.y - this.radius + this.dy < 0){
-      this.dy = -(this.dy * .9);
+      this.dy = -(this.dy * .95);
     } else {
       this.dy += this.gravity;
     }
-
     if(this.x + this.radius + this.dx > window.innerWidth || this.x - this.radius + this.dx < 0){
-      this.dx = -(this.dx * .7);
+      this.dx = -(this.dx * .8);
     }
-
     if(this.x + this.radius > window.innerWidth){
       this.x = window.innerWidth - this.radius;
     } else if(this.x - this.radius < 0){
       this.x = this.radius;
     }
-
     if(this.y + this.radius <= window.innerHeight && this.y - this.radius >= 0){
       this.y += this.dy;
       this.x += this.dx;
@@ -66,8 +66,6 @@ class Ball{
       this.dy = 0;
       this.x += this.dx;
     }
-
-
     this.draw();
   }
 

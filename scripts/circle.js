@@ -3,8 +3,8 @@ import * as Util from './util.js';
 class Circle {
   constructor(c,x,y){
     this.c = c;
-    this.x = x;
-    this.y = y;
+    this.x = x + Util.randInRange(0,100) * Util.randInPos();
+    this.y = y + Util.randInRange(0,100) * Util.randInPos();
     this.radius = Util.randInRange(10,50);
     this.color = Util.randomColor();
     this.width = Util.randInRange(2,20);

@@ -66,9 +66,11 @@ window.addEventListener('resize', () => {
 });
 
 window.addEventListener('click', (e) => {
-  const circle = new Circle(c, e.x, e.y);
-  circle.draw();
-  animations.push(circle);
+  for (let i = 0; i < 2; i++) {
+    const circle = new Circle(c, e.x, e.y);
+    circle.draw();
+    animations.push(circle);
+  }
 
   for (let i = 0; i < 3; i++) {
     let ball = new Ball(c, e.x, e.y, g);
@@ -182,6 +184,11 @@ window.addEventListener('keydown', e => {
       audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
       g = -g;
       setGravity();
+      break;
+    case 186:
+      audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
+      balls = [];
+      animations = [];
       break;
     case 191:
       audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
