@@ -121,24 +121,6 @@ const getDistance = (x1,y1,x2,y2) => {
 /* harmony export (immutable) */ __webpack_exports__["b"] = getDistance;
 
 
-const vel = (ball) => {
-  return pythag(ball.dx, ball.dy);
-};
-/* unused harmony export vel */
-
-
-const kinE = (v, mass) => {
-  return (0.5)*mass * Math.pow(v, 2);
-};
-/* unused harmony export kinE */
-
-
-const resultVel = (v1, v2, m1, m2) => {
-  return Math.sqrt((2/m1) * (kinE(v1,m1) + kinE(v2,m2)));
-};
-/* unused harmony export resultVel */
-
-
 const addVector = (v1, v2) => {
   const resultVector = {};
   resultVector.x = v1.x + v2.x;
@@ -188,10 +170,11 @@ const unitVector = v => {
 
 
 const faster = (v1, v2) => {
-  if((v1 < 0 && v2 < 0) || (v1 > 0 && v2 > 0)){
-    if((v1 > v2) || (v2 < v1)){
-      return true;
-    }
+  if((v1 < 0 && v2 < 0) && (Math.abs(v2) > Math.abs(v1))){
+    return true;
+  }
+  if((v1 > 0 && v2 > 0) && (Math.abs(v1) > Math.abs(v2)) ){
+    return true;
   }
   return false;
 };
@@ -339,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
   __WEBPACK_IMPORTED_MODULE_5__util_js__["h" /* resizeCanvas */](canvas);
   Object(__WEBPACK_IMPORTED_MODULE_4__audio_js__["a" /* setAudio */])();
   animate();
-  document.getElementById('backtrack').volume = .2;
+  document.getElementById('backtrack').volume = .4;
 });
 
 window.addEventListener('resize', () => {
@@ -368,11 +351,17 @@ window.addEventListener('click', (e) => {
 window.addEventListener('mousemove', e => {
   for (let i = 0; i < balls.length; i++) {
     if(__WEBPACK_IMPORTED_MODULE_5__util_js__["b" /* getDistance */](balls[i].x, balls[i].y, e.x, e.y) - balls[i].radius <= 50){
-      balls[i].dy -= 5;
-      balls[i].dx = Math.ceil(balls[i].dx * 1.1);
       if(balls[i].y + balls[i].radius > window.innerHeight){
         balls[i].y = window.innerHeight - (balls[i].radius) * 2;
         balls[i].dx = __WEBPACK_IMPORTED_MODULE_5__util_js__["e" /* randInRange */](1,1.5) * __WEBPACK_IMPORTED_MODULE_5__util_js__["d" /* randInPos */]();
+        balls[i].dy -=5;
+      } else if(balls[i].y - balls[i].radius < 0){
+        balls[i].y = (balls[i].radius) * 2;
+        balls[i].dx = __WEBPACK_IMPORTED_MODULE_5__util_js__["e" /* randInRange */](1,1.5) * __WEBPACK_IMPORTED_MODULE_5__util_js__["d" /* randInPos */]();
+        balls[i].dy +=5;
+      } else {
+        balls[i].dy *= 1.2;
+        balls[i].dx *= 1.2;
       }
     }
   }
@@ -640,7 +629,7 @@ class Ripple{
 class Ball{
   constructor(c, x, y, g){
     this.c = c;
-    this.radius = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](10,30);
+    this.radius = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](10,25);
     this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randomColor */]();
     this.dy = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](2,5) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
     this.dx = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](10,15) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();

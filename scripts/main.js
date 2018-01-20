@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
   Util.resizeCanvas(canvas);
   setAudio();
   animate();
-  document.getElementById('backtrack').volume = .2;
+  document.getElementById('backtrack').volume = .4;
 });
 
 window.addEventListener('resize', () => {
@@ -86,11 +86,17 @@ window.addEventListener('click', (e) => {
 window.addEventListener('mousemove', e => {
   for (let i = 0; i < balls.length; i++) {
     if(Util.getDistance(balls[i].x, balls[i].y, e.x, e.y) - balls[i].radius <= 50){
-      balls[i].dy -= 5;
-      balls[i].dx = Math.ceil(balls[i].dx * 1.1);
       if(balls[i].y + balls[i].radius > window.innerHeight){
         balls[i].y = window.innerHeight - (balls[i].radius) * 2;
         balls[i].dx = Util.randInRange(1,1.5) * Util.randInPos();
+        balls[i].dy -=5;
+      } else if(balls[i].y - balls[i].radius < 0){
+        balls[i].y = (balls[i].radius) * 2;
+        balls[i].dx = Util.randInRange(1,1.5) * Util.randInPos();
+        balls[i].dy +=5;
+      } else {
+        balls[i].dy *= 1.2;
+        balls[i].dx *= 1.2;
       }
     }
   }

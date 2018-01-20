@@ -3,7 +3,7 @@ import * as Util from './util.js';
 class Ball{
   constructor(c, x, y, g){
     this.c = c;
-    this.radius = Util.randInRange(10,30);
+    this.radius = Util.randInRange(10,25);
     this.color = Util.randomColor();
     this.dy = Util.randInRange(2,5) * Util.randInPos();
     this.dx = Util.randInRange(10,15) * Util.randInPos();

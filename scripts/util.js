@@ -37,18 +37,6 @@ export const getDistance = (x1,y1,x2,y2) => {
   return pythag(xdist,ydist);
 };
 
-export const vel = (ball) => {
-  return pythag(ball.dx, ball.dy);
-};
-
-export const kinE = (v, mass) => {
-  return (0.5)*mass * Math.pow(v, 2);
-};
-
-export const resultVel = (v1, v2, m1, m2) => {
-  return Math.sqrt((2/m1) * (kinE(v1,m1) + kinE(v2,m2)));
-};
-
 export const addVector = (v1, v2) => {
   const resultVector = {};
   resultVector.x = v1.x + v2.x;
@@ -84,10 +72,11 @@ export const unitVector = v => {
 };
 
 export const faster = (v1, v2) => {
-  if((v1 < 0 && v2 < 0) || (v1 > 0 && v2 > 0)){
-    if((v1 > v2) || (v2 < v1)){
-      return true;
-    }
+  if((v1 < 0 && v2 < 0) && (Math.abs(v2) > Math.abs(v1))){
+    return true;
+  }
+  if((v1 > 0 && v2 > 0) && (Math.abs(v1) > Math.abs(v2)) ){
+    return true;
   }
   return false;
 };
