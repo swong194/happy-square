@@ -1,8 +1,9 @@
 import Circle from './circle.js';
 import Line from './line.js';
-import Ripple from './ripple.js';
 import Ball from './ball.js';
 import { setAudio } from './audio.js';
+import Hoop from './hoop.js';
+import Star from './star.js';
 import * as Util from './util.js';
 
 const canvas = document.querySelector('canvas');
@@ -14,6 +15,8 @@ const mouse = {};
 
 let animations = [];
 let balls = [];
+let stars = [];
+let hoop;
 
 const setGravity = () => {
   for (var i = 0; i < balls.length; i++) {
@@ -22,7 +25,6 @@ const setGravity = () => {
 };
 
 const animate = () => {
-  requestAnimationFrame(animate);
   c.clearRect(0, 0, innerWidth, innerHeight);
   for (let i = 0; i < animations.length; i++) {
     animations[i].update();
@@ -40,22 +42,53 @@ const animate = () => {
     }
   }
 
+  for (let i = 0; i < balls.length; i++) {
+    if(Util.getDistance(balls[i].x, balls[i].y, 0, window.innerHeight / 2 ) - balls[i].radius <= 50){
+      playRandomSound();
+      for (let j = 0; j < 10; j++) {
+        const star = new Star(c, 0, window.innerHeight / 2);
+        stars.push(star);
+      }
+    }
+  }
+
+  for (let i = 0; i < stars.length; i++) {
+    stars[i].update();
+  }
+
+  hoop.update();
 
   if(animations.length > 15 ){
     animations = animations.slice(8);
   }
+
   if(balls.length > 80){
     balls = balls.slice(10);
   }
+
+  if(stars.length > 300){
+    stars = stars.slice(100);
+  }
+  requestAnimationFrame(animate);
 };
 
 const init = () => {
   animations =[];
+  balls = [];
+  stars = [];
+  hoop = new Hoop(c);
+};
+
+const playRandomSound = () => {
+  let audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
+  audio.currentTime = 0;
+  audio.play();
 };
 
 document.addEventListener('DOMContentLoaded', () => {
   Util.resizeCanvas(canvas);
   setAudio();
+  hoop = new Hoop(c);
   animate();
   document.getElementById('backtrack').volume = .4;
 });
@@ -78,9 +111,7 @@ window.addEventListener('click', (e) => {
     balls.push(ball);
   }
 
-  let audio = document.getElementById(`${Math.ceil(Math.random() * 27)}`);
-  audio.currentTime = 0;
-  audio.play();
+  playRandomSound();
 });
 
 window.addEventListener('mousemove', e => {
@@ -193,8 +224,7 @@ window.addEventListener('keydown', e => {
       break;
     case 186:
       audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
-      balls = [];
-      animations = [];
+      init();
       break;
     case 191:
       audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);

@@ -259,10 +259,12 @@ const resizeCanvas = (canvas) => {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__circle_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__line_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ripple_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ball_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__audio_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__util_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ball_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__audio_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__hoop_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__star_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__util_js__ = __webpack_require__(0);
+
 
 
 
@@ -273,12 +275,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 c.globalAlpha = 0.1;
-let g = __WEBPACK_IMPORTED_MODULE_5__util_js__["e" /* randInRange */](1,2);
+let g = __WEBPACK_IMPORTED_MODULE_6__util_js__["e" /* randInRange */](1,2);
 
 const mouse = {};
 
 let animations = [];
 let balls = [];
+let stars = [];
+let hoop;
 
 const setGravity = () => {
   for (var i = 0; i < balls.length; i++) {
@@ -287,7 +291,6 @@ const setGravity = () => {
 };
 
 const animate = () => {
-  requestAnimationFrame(animate);
   c.clearRect(0, 0, innerWidth, innerHeight);
   for (let i = 0; i < animations.length; i++) {
     animations[i].update();
@@ -299,34 +302,65 @@ const animate = () => {
 
   for (let i = 0; i < balls.length - 1; i++) {
     for (let j = i+1; j < balls.length; j++) {
-      if(__WEBPACK_IMPORTED_MODULE_5__util_js__["a" /* ballCollide */](balls[i],balls[j])){
-        __WEBPACK_IMPORTED_MODULE_5__util_js__["c" /* newVelocities */](balls[i],balls[j]);
+      if(__WEBPACK_IMPORTED_MODULE_6__util_js__["a" /* ballCollide */](balls[i],balls[j])){
+        __WEBPACK_IMPORTED_MODULE_6__util_js__["c" /* newVelocities */](balls[i],balls[j]);
       }
     }
   }
 
+  for (let i = 0; i < balls.length; i++) {
+    if(__WEBPACK_IMPORTED_MODULE_6__util_js__["b" /* getDistance */](balls[i].x, balls[i].y, 0, window.innerHeight / 2 ) - balls[i].radius <= 50){
+      playRandomSound();
+      for (let j = 0; j < 10; j++) {
+        const star = new __WEBPACK_IMPORTED_MODULE_5__star_js__["a" /* default */](c, 0, window.innerHeight / 2);
+        stars.push(star);
+      }
+    }
+  }
+
+  for (let i = 0; i < stars.length; i++) {
+    stars[i].update();
+  }
+
+  hoop.update();
 
   if(animations.length > 15 ){
     animations = animations.slice(8);
   }
+
   if(balls.length > 80){
     balls = balls.slice(10);
   }
+
+  if(stars.length > 300){
+    stars = stars.slice(100);
+  }
+  requestAnimationFrame(animate);
 };
 
 const init = () => {
   animations =[];
+  balls = [];
+  stars = [];
+  hoop = new __WEBPACK_IMPORTED_MODULE_4__hoop_js__["a" /* default */](c);
+};
+
+const playRandomSound = () => {
+  let audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
+  audio.currentTime = 0;
+  audio.play();
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  __WEBPACK_IMPORTED_MODULE_5__util_js__["h" /* resizeCanvas */](canvas);
-  Object(__WEBPACK_IMPORTED_MODULE_4__audio_js__["a" /* setAudio */])();
+  __WEBPACK_IMPORTED_MODULE_6__util_js__["h" /* resizeCanvas */](canvas);
+  Object(__WEBPACK_IMPORTED_MODULE_3__audio_js__["a" /* setAudio */])();
+  hoop = new __WEBPACK_IMPORTED_MODULE_4__hoop_js__["a" /* default */](c);
   animate();
   document.getElementById('backtrack').volume = .4;
 });
 
 window.addEventListener('resize', () => {
-  __WEBPACK_IMPORTED_MODULE_5__util_js__["h" /* resizeCanvas */](canvas);
+  __WEBPACK_IMPORTED_MODULE_6__util_js__["h" /* resizeCanvas */](canvas);
   init();
 });
 
@@ -338,26 +372,24 @@ window.addEventListener('click', (e) => {
   }
 
   for (let i = 0; i < 3; i++) {
-    let ball = new __WEBPACK_IMPORTED_MODULE_3__ball_js__["a" /* default */](c, e.x, e.y, g);
+    let ball = new __WEBPACK_IMPORTED_MODULE_2__ball_js__["a" /* default */](c, e.x, e.y, g);
     ball.draw();
     balls.push(ball);
   }
 
-  let audio = document.getElementById(`${Math.ceil(Math.random() * 27)}`);
-  audio.currentTime = 0;
-  audio.play();
+  playRandomSound();
 });
 
 window.addEventListener('mousemove', e => {
   for (let i = 0; i < balls.length; i++) {
-    if(__WEBPACK_IMPORTED_MODULE_5__util_js__["b" /* getDistance */](balls[i].x, balls[i].y, e.x, e.y) - balls[i].radius <= 50){
+    if(__WEBPACK_IMPORTED_MODULE_6__util_js__["b" /* getDistance */](balls[i].x, balls[i].y, e.x, e.y) - balls[i].radius <= 50){
       if(balls[i].y + balls[i].radius > window.innerHeight){
         balls[i].y = window.innerHeight - (balls[i].radius) * 2;
-        balls[i].dx = __WEBPACK_IMPORTED_MODULE_5__util_js__["e" /* randInRange */](1,1.5) * __WEBPACK_IMPORTED_MODULE_5__util_js__["d" /* randInPos */]();
+        balls[i].dx = __WEBPACK_IMPORTED_MODULE_6__util_js__["e" /* randInRange */](1,1.5) * __WEBPACK_IMPORTED_MODULE_6__util_js__["d" /* randInPos */]();
         balls[i].dy -=5;
       } else if(balls[i].y - balls[i].radius < 0){
         balls[i].y = (balls[i].radius) * 2;
-        balls[i].dx = __WEBPACK_IMPORTED_MODULE_5__util_js__["e" /* randInRange */](1,1.5) * __WEBPACK_IMPORTED_MODULE_5__util_js__["d" /* randInPos */]();
+        balls[i].dx = __WEBPACK_IMPORTED_MODULE_6__util_js__["e" /* randInRange */](1,1.5) * __WEBPACK_IMPORTED_MODULE_6__util_js__["d" /* randInPos */]();
         balls[i].dy +=5;
       } else {
         balls[i].dy *= 1.2;
@@ -458,15 +490,14 @@ window.addEventListener('keydown', e => {
       break;
     case 186:
       audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
-      balls = [];
-      animations = [];
+      init();
       break;
     case 191:
       audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
       if(g !== 0){
         g = 0;
       } else {
-        g = __WEBPACK_IMPORTED_MODULE_5__util_js__["e" /* randInRange */](1,2);
+        g = __WEBPACK_IMPORTED_MODULE_6__util_js__["e" /* randInRange */](1,2);
       }
       setGravity();
       break;
@@ -474,9 +505,9 @@ window.addEventListener('keydown', e => {
       audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
       for (let i = 0; i < balls.length; i++) {
         balls[i].y = window.innerHeight / 2;
-        balls[i].x = __WEBPACK_IMPORTED_MODULE_5__util_js__["e" /* randInRange */](0 + balls[i].radius, window.innerWidth - balls[i].radius);
-        balls[i].dx = __WEBPACK_IMPORTED_MODULE_5__util_js__["e" /* randInRange */](10,20) * __WEBPACK_IMPORTED_MODULE_5__util_js__["d" /* randInPos */]();
-        balls[i].dy = __WEBPACK_IMPORTED_MODULE_5__util_js__["e" /* randInRange */](5,10) * __WEBPACK_IMPORTED_MODULE_5__util_js__["d" /* randInPos */]();
+        balls[i].x = __WEBPACK_IMPORTED_MODULE_6__util_js__["e" /* randInRange */](0 + balls[i].radius, window.innerWidth - balls[i].radius);
+        balls[i].dx = __WEBPACK_IMPORTED_MODULE_6__util_js__["e" /* randInRange */](10,20) * __WEBPACK_IMPORTED_MODULE_6__util_js__["d" /* randInPos */]();
+        balls[i].dy = __WEBPACK_IMPORTED_MODULE_6__util_js__["e" /* randInRange */](5,10) * __WEBPACK_IMPORTED_MODULE_6__util_js__["d" /* randInPos */]();
       }
       break;
   }
@@ -596,28 +627,7 @@ const setAudio = () => {
 
 
 /***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-class Ripple{
-  constructor(){
-    
-  }
-
-  draw(){
-
-  }
-
-  update(){
-
-  }
-}
-
-/* unused harmony default export */ var _unused_webpack_default_export = (Ripple);
-
-
-/***/ }),
+/* 5 */,
 /* 6 */,
 /* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -703,6 +713,87 @@ class Ball{
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (Ball);
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+class Hoop{
+  constructor(c){
+    this.c = c;
+  }
+
+  draw(){
+    this.c.fillStyle = 'black';
+    this.c.font = "30px Arial";
+    this.c.fillText("Hoop",0,window.innerHeight / 2);
+  }
+
+  update(){
+    this.draw();
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Hoop);
+
+
+/***/ }),
+/* 9 */,
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_js__ = __webpack_require__(0);
+
+
+class Star {
+  constructor(c, x, y){
+    this.c = c;
+    this.rot = Math.PI / 2 * 3;
+    this.x = x;
+    this.y = y;
+    this.outerR = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](15,25);
+    this.innerR = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](10,13);
+    this.spikes = 5;
+    this.step = Math.PI / this.spikes;
+    this.dy = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](2,5) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
+    this.dx = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](10,15) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
+  }
+
+  draw(){
+    this.c.strokeStyle = "#000";
+    this.c.beginPath();
+    this.c.moveTo(this.x, this.y - this.outerR);
+    for (let i = 0; i < this.spikes; i++) {
+        let x = this.x + Math.cos(this.rot) * this.outerR;
+        let y = this.y + Math.sin(this.rot) * this.outerR;
+        this.c.lineTo(x, y);
+        this.rot += this.step;
+
+        x = this.x + Math.cos(this.rot) * this.innerR;
+        y = this.y + Math.sin(this.rot) * this.innerR;
+        this.c.lineTo(x, y);
+        this.rot += this.step;
+    }
+    this.c.lineTo(this.x, this.y - this.outerR);
+    this.c.closePath();
+    this.c.fillStyle = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randomColor */]();
+    this.c.fill();
+
+  }
+
+  update(){
+    this.dy += __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](1,2) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
+    this.x += this.dx;
+    this.y += this.dy;
+    this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randomColor */]();
+    this.draw();
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Star);
 
 
 /***/ })
