@@ -348,7 +348,7 @@ const animate = () => {
       balls = balls.slice(10);
     }
 
-    if(stars.length > 300){
+    if(stars.length > 400){
       stars = stars.slice(100);
     }
   }
