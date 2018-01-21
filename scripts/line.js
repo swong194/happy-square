@@ -9,7 +9,7 @@ class Line{
     this.movey = this.y;
     this.c = c;
     this.color = Util.randomColor();
-    this.width = Math.random() * 10 + 20;
+    this.width = Util.randInRange(15,50);
   }
 
   draw(){

@@ -70,19 +70,29 @@
 "use strict";
 const randomColor = () => {
   const color = randInArr(
-    [`rgb(176,176,204)`,
-      `rgb(53,52,153)`,
-      `rgb(245,250,255)`,
-      `rgb(204,147,7)`,
-      `rgb(255,184,114)`,
-      `rgb(141,136,204)`,
-      `rgb(255,150,32)`,
-      `rgb(45,34,153)`
+    [`#f95f2b`,
+      `#f34330`,
+      `#ea2c2c`,
+      `	#fffefe`,
+      `#81b3fd`,
+      `	#1d76fc`,
+      `	#0348b0`
     ]
   );
   return color;
 };
 /* harmony export (immutable) */ __webpack_exports__["f"] = randomColor;
+
+
+const reallyRandomColor = () => {
+  let color = 'rgba(';
+  for (let u = 0; u < 3; u++) {
+   color += `${Math.floor(Math.random() * 255)},`;
+  }
+  color += '1)';
+  return color;
+};
+/* unused harmony export reallyRandomColor */
 
 
 const randomStart = () => {
@@ -331,6 +341,7 @@ const animate = () => {
             const star = new __WEBPACK_IMPORTED_MODULE_5__star_js__["a" /* default */](c, 0, window.innerHeight / 2);
             stars.push(star);
           }
+          balls[i].dx += 10;
         }
       }
       hoop.update();
@@ -348,8 +359,8 @@ const animate = () => {
       balls = balls.slice(10);
     }
 
-    if(stars.length > 400){
-      stars = stars.slice(100);
+    if(stars.length > 500){
+      stars = stars.slice(300);
     }
   }
 };
@@ -667,7 +678,7 @@ class Line{
     this.movey = this.y;
     this.c = c;
     this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randomColor */]();
-    this.width = Math.random() * 10 + 20;
+    this.width = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](15,50);
   }
 
   draw(){
@@ -885,7 +896,7 @@ class Star {
     }
     this.c.lineTo(this.x, this.y - this.outerR);
     this.c.closePath();
-    this.c.fillStyle = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randomColor */]();
+    this.c.fillStyle = 'yellow';
     this.c.fill();
 
   }
@@ -894,7 +905,6 @@ class Star {
     this.dy += __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](1,2) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
     this.x += this.dx;
     this.y += this.dy;
-    this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randomColor */]();
     this.draw();
   }
 }

@@ -31,7 +31,7 @@ class Star {
     }
     this.c.lineTo(this.x, this.y - this.outerR);
     this.c.closePath();
-    this.c.fillStyle = Util.randomColor();
+    this.c.fillStyle = 'yellow';
     this.c.fill();
 
   }
@@ -40,7 +40,6 @@ class Star {
     this.dy += Util.randInRange(1,2) * Util.randInPos();
     this.x += this.dx;
     this.y += this.dy;
-    this.color = Util.randomColor();
     this.draw();
   }
 }

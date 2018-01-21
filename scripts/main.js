@@ -61,6 +61,7 @@ const animate = () => {
             const star = new Star(c, 0, window.innerHeight / 2);
             stars.push(star);
           }
+          balls[i].dx += 10;
         }
       }
       hoop.update();
@@ -78,8 +79,8 @@ const animate = () => {
       balls = balls.slice(10);
     }
 
-    if(stars.length > 400){
-      stars = stars.slice(100);
+    if(stars.length > 500){
+      stars = stars.slice(300);
     }
   }
 };
