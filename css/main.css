@@ -1,11 +1,89 @@
 #landing-overlay{
   position: absolute;
-  display: none;
+  z-index: 2;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: rgba(0,0,0,.6);
+  font-family: 'Rubik', sans-serif;
+  text-shadow: 1px 1px 2px black;
+}
+#landing-overlay > h1{
+  color: white;
+  font-size: 75px;
+  margin: 0;
+}
+
+.happy, .square{
+  transition: color .5s;
+  cursor: default;
+}
+
+.happy:hover{
+  color: #535299;
+}
+
+.square:hover{
+  color: #FF9D37;
+}
+
+.landing-container{
+  width: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.landing-container>button{
+  color: white;
+  border: none;
+  background:transparent;
+  font-size: 50px;
+  padding: 20px;
+  cursor: pointer;
+  outline: none;
+  transition: color .5s;
+}
+
+.landing-container>button:hover{
+  color: #CC7D52;
+}
+
+.personal-info i{
+  font-size: 50px;
+  color:white;
+  transition: color .5s;
+}
+
+.fa-github-square:hover{
+  color: #FFC98F;
+}
+
+.fa-linkedin-square:hover{
+  color: #575399;
 }
 
 canvas{
   background: linear-gradient(rgba(255,240,191,1), rgba(255,239,203,1));
-  background-image: url('../images/bear.jpg');
+  background-image: url('../images/background.png');
   background-position: center;
   background-size: cover;
+}
+
+.audio-list{
+  display: none;
+}
+
+.controls p{
+  font-size: 20px;
+  color:white;
+}
+
+.description{
+  text-align: right;
+  color:white;
 }

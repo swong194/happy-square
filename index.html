@@ -3,15 +3,45 @@
   <head>
     <meta charset="utf-8">
     <title>Happy Square</title>
+    <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="./images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./css/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="./css/reset.css">
+    <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
     <link rel="stylesheet" href="./css/main.css">
   </head>
   <body>
     <div id='landing-overlay'>
-      <div class='personal-info'>
-        <i class="fa fa-linkedin-square" aria-hidden="true"></i>
+      <h1><span style='color:#3E5F99'>
+        H</span><span class='happy'>a</span><span class='happy'>p</span><span class='happy'>p</span><span class='happy'>y</span>
+        <span style='color:#CC6352'>S</span><span class='square'>q</span><span class='square'>u</span><span class='square'>a</span><span class='square'>r</span><span class='square'>e</span></h1>
+      <div class="description">
+        <p>-An interactive board built by <strong>Sunny Wong</strong> with a little bit of physics and humor</p>
       </div>
+      <div class="landing-container">
+        <div class='personal-info'>
+          <a href="https://github.com/swong194" target='_blank'>
+            <i class="fa fa-github-square" aria-hidden="true"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/sunny-gy-wong/" target='_blank'>
+            <i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+        </div>
+        <div class="controls">
+          <button id='sound-button' type="button" name="button"><i id='sound' class="fa fa-volume-up" aria-hidden="true"></i></button>
+          <button id='hoop-button' type="button" name="button">Hoop On</button>
+          <button id='backtrack-button' type="button" name="button">Backtrack On</button>
+          <p>Use keys to play sounds, move your mouse and click around!</p>
+          <div class="control-keys">
+            <p>";" : clears the board</p>
+            <p>"," : flips gravity</p>
+            <p>"." : brings objects to the middle of the board</p>
+            <p>"/" : turns off gravity</p>
+            <p>"esc" : open menu</p>
+          </div>
+        </div>
+        <button id='start' type="button" name="button"><span style='color:#FFA145'>S</span>tart</button>
+      </div>
+
     </div>
 
     <div id='main'>
@@ -19,7 +49,7 @@
     </div>
 
     <div id='audio-list'>
-      <audio id='backtrack' autoplay=true loop=true src='./sound/backtrack.mp3'></audio>
+      <audio id='backtrack' loop=true src='./sound/backtrack.mp3'></audio>
     </div>
 
 

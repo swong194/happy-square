@@ -1,7 +1,9 @@
 import Circle from './circle.js';
 import Line from './line.js';
 import Ball from './ball.js';
-import { setAudio } from './audio.js';
+import {
+  setAudio, muteAudio, pauseBacktrack, resumeBacktrack
+} from './audio.js';
 import Hoop from './hoop.js';
 import Star from './star.js';
 import * as Util from './util.js';
@@ -17,6 +19,11 @@ let animations = [];
 let balls = [];
 let stars = [];
 let hoop;
+let hoopOn = true;
+let menuOn = true;
+let soundOn = true;
+let backtrackOn = true;
+let playOn = false;
 
 const setGravity = () => {
   for (var i = 0; i < balls.length; i++) {
@@ -25,58 +32,65 @@ const setGravity = () => {
 };
 
 const animate = () => {
-  c.clearRect(0, 0, innerWidth, innerHeight);
-  for (let i = 0; i < animations.length; i++) {
-    animations[i].update();
-  }
-
-  for (let i = 0; i < balls.length; i++) {
-    balls[i].update();
-  }
-
-  for (let i = 0; i < balls.length - 1; i++) {
-    for (let j = i+1; j < balls.length; j++) {
-      if(Util.ballCollide(balls[i],balls[j])){
-        Util.newVelocities(balls[i],balls[j]);
-      }
-    }
-  }
-
-  for (let i = 0; i < balls.length; i++) {
-    if(Util.getDistance(balls[i].x, balls[i].y, 0, window.innerHeight / 2 ) - balls[i].radius <= 50){
-      playRandomSound();
-      for (let j = 0; j < 10; j++) {
-        const star = new Star(c, 0, window.innerHeight / 2);
-        stars.push(star);
-      }
-    }
-  }
-
-  for (let i = 0; i < stars.length; i++) {
-    stars[i].update();
-  }
-
-  hoop.update();
-
-  if(animations.length > 15 ){
-    animations = animations.slice(8);
-  }
-
-  if(balls.length > 80){
-    balls = balls.slice(10);
-  }
-
-  if(stars.length > 300){
-    stars = stars.slice(100);
-  }
   requestAnimationFrame(animate);
+  if(playOn){
+    c.clearRect(0, 0, innerWidth, innerHeight);
+    for (let i = 0; i < animations.length; i++) {
+      animations[i].update();
+    }
+
+    for (let i = 0; i < balls.length; i++) {
+      balls[i].update();
+    }
+
+    for (let i = 0; i < balls.length - 1; i++) {
+      for (let j = i+1; j < balls.length; j++) {
+        if(Util.ballCollide(balls[i],balls[j])){
+          Util.newVelocities(balls[i],balls[j]);
+        }
+      }
+    }
+
+    if(hoopOn){
+      for (let i = 0; i < balls.length; i++) {
+        if(Util.getDistance(balls[i].x, balls[i].y, 0, window.innerHeight / 2 ) - balls[i].radius <= 50){
+          if(soundOn){
+            playRandomSound();
+          }
+          for (let j = 0; j < 10; j++) {
+            const star = new Star(c, 0, window.innerHeight / 2);
+            stars.push(star);
+          }
+        }
+      }
+      hoop.update();
+    }
+
+    for (let i = 0; i < stars.length; i++) {
+      stars[i].update();
+    }
+
+    if(animations.length > 15 ){
+      animations = animations.slice(8);
+    }
+
+    if(balls.length > 80){
+      balls = balls.slice(10);
+    }
+
+    if(stars.length > 300){
+      stars = stars.slice(100);
+    }
+  }
 };
 
 const init = () => {
   animations =[];
   balls = [];
   stars = [];
-  hoop = new Hoop(c);
+  if(hoopOn){
+    hoop = new Hoop(c);
+  }
 };
 
 const playRandomSound = () => {
@@ -85,12 +99,76 @@ const playRandomSound = () => {
   audio.play();
 };
 
+const openMenu = () => {
+  const overlay = document.getElementById('landing-overlay');
+  overlay.style.display = 'flex';
+  playOn = false;
+  window.removeEventListener('mousemove', mouseInteraction);
+};
+
+const closeMenu = () => {
+  const overlay = document.getElementById('landing-overlay');
+  overlay.style.display = 'none';
+  playOn = true;
+  addMouseMove();
+};
+
+const toggleSound = () => {
+  const volumeIcon = document.getElementById('sound');
+  if(soundOn){
+    muteAudio();
+    volumeIcon.classList.remove('fa-volume-up');
+    volumeIcon.classList.add('fa-volume-off');
+  } else {
+    volumeIcon.classList.remove('fa-volume-off');
+    volumeIcon.classList.add('fa-volume-up');
+  }
+  soundOn = !soundOn;
+};
+
+const toggleHoop = () => {
+  const hoopEle = document.getElementById('hoop-button');
+  if(hoopOn){
+    hoopEle.innerHTML = 'Hoop Off';
+  } else {
+    hoopEle.innerHTML = 'Hoop On';
+  }
+  hoopOn = !hoopOn;
+};
+
+const toggleBacktrack = () => {
+  const backtrackEle = document.getElementById('backtrack-button');
+  if(backtrackOn){
+    backtrackEle.innerHTML = 'Backtrack Off';
+    pauseBacktrack();
+  } else {
+    backtrackEle.innerHTML = 'Backtrack On';
+    resumeBacktrack();
+  }
+  backtrackOn = !backtrackOn;
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-  Util.resizeCanvas(canvas);
-  setAudio();
-  hoop = new Hoop(c);
   animate();
-  document.getElementById('backtrack').volume = .4;
+  init();
+  const soundButton = document.getElementById('sound-button');
+  soundButton.addEventListener('click', toggleSound);
+  const startButton = document.getElementById('start');
+  startButton.addEventListener('click', ()=>{
+    const overlay = document.getElementById('landing-overlay');
+    if(backtrackOn){
+      document.getElementById('backtrack').play();
+    }
+    closeMenu();
+  });
+  const hoopButton = document.getElementById('hoop-button');
+  hoopButton.addEventListener('click', toggleHoop);
+  const backtrackButton = document.getElementById('backtrack-button');
+  backtrackButton.addEventListener('click', toggleBacktrack);
+  Util.resizeCanvas(canvas);
+  document.getElementById('backtrack').volume = 1;
+  setAudio();
+  openMenu();
 });
 
 window.addEventListener('resize', () => {
@@ -110,11 +188,12 @@ window.addEventListener('click', (e) => {
     ball.draw();
     balls.push(ball);
   }
-
-  playRandomSound();
+  if(soundOn){
+    playRandomSound();
+  }
 });
 
-window.addEventListener('mousemove', e => {
+const mouseInteraction = e => {
   for (let i = 0; i < balls.length; i++) {
     if(Util.getDistance(balls[i].x, balls[i].y, e.x, e.y) - balls[i].radius <= 50){
       if(balls[i].y + balls[i].radius > window.innerHeight){
@@ -131,7 +210,11 @@ window.addEventListener('mousemove', e => {
       }
     }
   }
-});
+};
+
+const addMouseMove = () => {
+  window.addEventListener('mousemove', mouseInteraction);
+};
 
 window.addEventListener('keydown', e => {
   let audio;
@@ -215,19 +298,19 @@ window.addEventListener('keydown', e => {
       audio = document.getElementById('26');
       break;
     case 32:
-      audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
+      audio = document.getElementById(`${Math.ceil(Math.random() * 27)}`);
       break;
     case 188:
-      audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
+      audio = document.getElementById(`${Math.ceil(Math.random() * 27)}`);
       g = -g;
       setGravity();
       break;
     case 186:
-      audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
+      audio = document.getElementById(`${Math.ceil(Math.random() * 27)}`);
       init();
       break;
     case 191:
-      audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
+      audio = document.getElementById(`${Math.ceil(Math.random() * 27)}`);
       if(g !== 0){
         g = 0;
       } else {
@@ -235,8 +318,12 @@ window.addEventListener('keydown', e => {
       }
       setGravity();
       break;
-    default:
-      audio = document.getElementById(`${Math.ceil(Math.random() * 26)}`);
+    case 27:
+      openMenu();
+      audio = document.getElementById(`${Math.ceil(Math.random() * 27)}`);
+      break;
+    case 190:
+      audio = document.getElementById(`${Math.ceil(Math.random() * 27)}`);
       for (let i = 0; i < balls.length; i++) {
         balls[i].y = window.innerHeight / 2;
         balls[i].x = Util.randInRange(0 + balls[i].radius, window.innerWidth - balls[i].radius);
@@ -244,21 +331,15 @@ window.addEventListener('keydown', e => {
         balls[i].dy = Util.randInRange(5,10) * Util.randInPos();
       }
       break;
+    default:
+      audio = document.getElementById(`${Math.ceil(Math.random() * 27)}`);
+      break;
   }
   const line = new Line(c);
   line.draw();
   animations.push(line);
   audio.currentTime = 0;
-  audio.play();
+  if(soundOn){
+    audio.play();
+  }
 });
-
-
-
-
-
-
-
-
-
-
-let hello;

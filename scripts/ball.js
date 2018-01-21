@@ -6,7 +6,7 @@ class Ball{
     this.radius = Util.randInRange(10,25);
     this.color = Util.randomColor();
     this.dy = Util.randInRange(2,5) * Util.randInPos();
-    this.dx = Util.randInRange(10,15) * Util.randInPos();
+    this.dx = Util.randInRange(5,10) * Util.randInPos();
 
     let xpos = x + Util.randInRange(0,100) * Util.randInPos();
 

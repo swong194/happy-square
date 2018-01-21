@@ -6,8 +6,8 @@ class Star {
     this.rot = Math.PI / 2 * 3;
     this.x = x;
     this.y = y;
-    this.outerR = Util.randInRange(15,25);
-    this.innerR = Util.randInRange(10,13);
+    this.outerR = Util.randInRange(11,15);
+    this.innerR = Util.randInRange(5,10);
     this.spikes = 5;
     this.step = Math.PI / this.spikes;
     this.dy = Util.randInRange(2,5) * Util.randInPos();

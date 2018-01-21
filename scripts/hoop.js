@@ -4,8 +4,8 @@ class Hoop{
   }
 
   draw(){
-    this.c.fillStyle = 'black';
-    this.c.font = "30px Arial";
+    this.c.fillStyle = 'white';
+    this.c.font = "30px sans-serif";
     this.c.fillText("Hoop",0,window.innerHeight / 2);
   }
 
