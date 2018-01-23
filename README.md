@@ -1,10 +1,14 @@
-# happy-square
+# Happy Square
 
-Happy Square is a interactive visual and audio square! Click anywhere on the screen and see what cool suprises await!
+![happy-square-demo](./screenshots/happysquare.gif)
+
+Happy Square is a interactive visual and audio square! Click anywhere on the screen and see what cool surprises await!
+
+<a href='http://sunnygwong.com/happy-square/'>Live Demo</a>
 
 # Functionality and MVPs
 -  Users can click or drag their mouse to trigger audio and visual effects
--  Effects are randomized to create unique experiences 
+-  Effects are randomized to create unique experiences
 
 # Wireframes
 
@@ -18,21 +22,23 @@ Webpack to bundle dependent scripts
 
 # Timeline
 
-## Day 1 
--  Learn basics of Canvas and obtain audio files 
--  Set up webpack config and index.html 
--  Set up canvas
+## Day 1
+-  Learn basics of Canvas and obtain audio files
+-  Set up webpack config and index.html
+-  Set up canvas to play audio files and interact with mouse click
 
-## Day 2 
--  Create a base of effects triggered on click events
+## Day 2
+-  Create a base of effects triggered on click events with circles and lines
+-  Randomize and add a layer of physics to account for velocity, acceleration, gravity and collision.
+-  Add bounds to canvas
 -  Add audio interaction
--  Add feedback for user 
+-  Add feedback for user
 
-## Day 3 
--  Randomize and add more visual effects
--  Add mouse drag feature
--  Add base audio
+## Day 3
+-  Continue Day 2
+-  Add mouse interactions with objects on screen
+-  Add backtrack
 
-## Day 4 
+## Day 4
 -  Add final styling for the page including personal links
 -  Clean and finalize features
