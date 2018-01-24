@@ -101,6 +101,8 @@ const playRandomSound = () => {
 
 const openMenu = () => {
   const overlay = document.getElementById('landing-overlay');
+  const instructions = document.getElementById('instructions');
+  instructions.style.display = 'none';
   overlay.style.display = 'flex';
   playOn = false;
   window.removeEventListener('mousemove', mouseInteraction);
@@ -109,6 +111,8 @@ const openMenu = () => {
 const closeMenu = () => {
   const overlay = document.getElementById('landing-overlay');
   overlay.style.display = 'none';
+  const instructions = document.getElementById('instructions');
+  instructions.style.display = 'block';
   playOn = true;
   addMouseMove();
 };

@@ -88,3 +88,23 @@ canvas{
   text-align: right;
   color:white;
 }
+
+.instructions{
+  display: none;
+  background-color: rgba(0,0,0,.2);
+  text-align: center;
+  position: absolute;
+  opacity: .5;
+  right: 0;
+  top: 0;
+  color: white;
+  text-shadow: 1px 1px 1px black;
+  transition: opacity 1s;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+}
+
+.instructions:hover{
+  opacity: 1;
+}
