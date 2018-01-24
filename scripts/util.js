@@ -154,6 +154,6 @@ export const ballCollide = (ball1, ball2) => {
 };
 
 export const resizeCanvas = (canvas) => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  // canvas.width = window.innerWidth;
+  // canvas.height = window.innerHeight;
 };

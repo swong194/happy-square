@@ -1,16 +1,17 @@
 #landing-overlay{
   position: absolute;
   z-index: 2;
-  width: 100vw;
-  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0,0,0,.6);
   font-family: 'Rubik', sans-serif;
   text-shadow: 1px 1px 2px black;
 }
+
 #landing-overlay > h1{
   color: white;
   font-size: 75px;
@@ -67,15 +68,15 @@
   color: #575399;
 }
 
-canvas{
-  background: linear-gradient(rgba(255,240,191,1), rgba(255,239,203,1));
-  background-image: url('../images/background.png');
-  background-position: center;
-  background-size: cover;
+#audio-list, audio{
+  display: none;
 }
 
-.audio-list{
-  display: none;
+canvas{
+  background: linear-gradient(rgba(255,240,191,1), rgba(255,239,203,1));
+  background-image: url('../images/background.jpg');
+  background-position: center;
+  background-size: cover;
 }
 
 .controls p{

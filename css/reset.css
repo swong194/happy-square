@@ -1,7 +1,8 @@
-html, body {
+html, body, canvas, div {
   margin: 0;
   padding: 0;
   user-select: none;
+  overflow: hidden;
 }
 
 button{
