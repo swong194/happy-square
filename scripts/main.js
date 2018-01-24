@@ -58,7 +58,7 @@ const animate = () => {
             playRandomSound();
           }
           for (let j = 0; j < 10; j++) {
-            const star = new Star(c, 0, window.innerHeight / 2);
+            const star = new Star(c, 50, window.innerHeight / 2 );
             stars.push(star);
           }
           balls[i].dx += 10;

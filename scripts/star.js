@@ -11,7 +11,7 @@ class Star {
     this.spikes = 5;
     this.step = Math.PI / this.spikes;
     this.dy = Util.randInRange(2,5) * Util.randInPos();
-    this.dx = Util.randInRange(10,15) * Util.randInPos();
+    this.dx = Util.randInRange(10,15);
   }
 
   draw(){

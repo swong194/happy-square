@@ -347,7 +347,7 @@ const animate = () => {
             playRandomSound();
           }
           for (let j = 0; j < 10; j++) {
-            const star = new __WEBPACK_IMPORTED_MODULE_5__star_js__["a" /* default */](c, 0, window.innerHeight / 2);
+            const star = new __WEBPACK_IMPORTED_MODULE_5__star_js__["a" /* default */](c, 50, window.innerHeight / 2 );
             stars.push(star);
           }
           balls[i].dx += 10;
@@ -849,12 +849,13 @@ const resumeBacktrack = () => {
 class Hoop{
   constructor(c){
     this.c = c;
+    this.image = new Image(200,200);
+    this.image.src = 'https://i.imgur.com/7cOZv3G.png';
+    this.image.onload = this.draw();
   }
 
   draw(){
-    this.c.fillStyle = 'white';
-    this.c.font = "30px sans-serif";
-    this.c.fillText("Hoop",0,window.innerHeight / 2);
+    this.c.drawImage(this.image, 0, 0, 700, 700, 0, window.innerHeight/2 - 30, 75, 75);
   }
 
   update(){
@@ -884,7 +885,7 @@ class Star {
     this.spikes = 5;
     this.step = Math.PI / this.spikes;
     this.dy = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](2,5) * __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInPos */]();
-    this.dx = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](10,15) * __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInPos */]();
+    this.dx = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](10,15);
   }
 
   draw(){
