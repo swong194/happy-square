@@ -129,9 +129,9 @@ const toggleSound = () => {
 const toggleHoop = () => {
   const hoopEle = document.getElementById('hoop-button');
   if(hoopOn){
-    hoopEle.innerHTML = 'Hoop Off';
+    hoopEle.innerHTML = 'Stars Off';
   } else {
-    hoopEle.innerHTML = 'Hoop On';
+    hoopEle.innerHTML = 'Stars On';
   }
   hoopOn = !hoopOn;
 };
