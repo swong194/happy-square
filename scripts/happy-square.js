@@ -81,7 +81,7 @@ const randomColor = () => {
   );
   return color;
 };
-/* harmony export (immutable) */ __webpack_exports__["f"] = randomColor;
+/* harmony export (immutable) */ __webpack_exports__["g"] = randomColor;
 
 
 const reallyRandomColor = () => {
@@ -92,7 +92,7 @@ const reallyRandomColor = () => {
   color += '1)';
   return color;
 };
-/* unused harmony export reallyRandomColor */
+/* harmony export (immutable) */ __webpack_exports__["i"] = reallyRandomColor;
 
 
 const randomStart = () => {
@@ -101,7 +101,7 @@ const randomStart = () => {
 
   return [startOne, startTwo][Math.floor(Math.random() * 2)];
 };
-/* harmony export (immutable) */ __webpack_exports__["g"] = randomStart;
+/* harmony export (immutable) */ __webpack_exports__["h"] = randomStart;
 
 
 const randInArr = arr => {
@@ -113,13 +113,13 @@ const randInArr = arr => {
 const randInPos = () => {
   return randInArr([-1,1]);
 };
-/* harmony export (immutable) */ __webpack_exports__["d"] = randInPos;
+/* harmony export (immutable) */ __webpack_exports__["e"] = randInPos;
 
 
 const randInRange = (min, max) => {
   return Math.floor(Math.random() * (max-min) + min);
 };
-/* harmony export (immutable) */ __webpack_exports__["e"] = randInRange;
+/* harmony export (immutable) */ __webpack_exports__["f"] = randInRange;
 
 
 const pythag = (x,y) => {
@@ -263,7 +263,16 @@ const resizeCanvas = (canvas) => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 };
-/* harmony export (immutable) */ __webpack_exports__["h"] = resizeCanvas;
+/* harmony export (immutable) */ __webpack_exports__["j"] = resizeCanvas;
+
+
+const outOfCanvas = (x,y) => {
+  if(x < 0 || x >= window.innerWidth || y < 0 || y>= window.innerHeight){
+    return true;
+  }
+  return false;
+};
+/* harmony export (immutable) */ __webpack_exports__["d"] = outOfCanvas;
 
 
 
@@ -291,7 +300,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 c.globalAlpha = 0.1;
-let g = __WEBPACK_IMPORTED_MODULE_6__util_js__["e" /* randInRange */](1,2);
+let g = __WEBPACK_IMPORTED_MODULE_6__util_js__["f" /* randInRange */](1,2);
 
 const mouse = {};
 
@@ -351,16 +360,15 @@ const animate = () => {
       stars[i].update();
     }
 
-    if(animations.length > 15 ){
-      animations = animations.slice(8);
-    }
-
     if(balls.length > 80){
       balls = balls.slice(10);
     }
 
-    if(stars.length > 500){
-      stars = stars.slice(300);
+    for (let i = 0; i < stars.length; i++) {
+      if(__WEBPACK_IMPORTED_MODULE_6__util_js__["d" /* outOfCanvas */](stars[i].x, stars[i].y)){
+        stars.splice(i,1);
+        i -= 1;
+      }
     }
   }
 };
@@ -446,14 +454,14 @@ document.addEventListener('DOMContentLoaded', () => {
   hoopButton.addEventListener('click', toggleHoop);
   const backtrackButton = document.getElementById('backtrack-button');
   backtrackButton.addEventListener('click', toggleBacktrack);
-  __WEBPACK_IMPORTED_MODULE_6__util_js__["h" /* resizeCanvas */](canvas);
+  __WEBPACK_IMPORTED_MODULE_6__util_js__["j" /* resizeCanvas */](canvas);
   document.getElementById('backtrack').volume = 1;
   Object(__WEBPACK_IMPORTED_MODULE_3__audio_js__["d" /* setAudio */])();
   openMenu();
 });
 
 window.addEventListener('resize', () => {
-  __WEBPACK_IMPORTED_MODULE_6__util_js__["h" /* resizeCanvas */](canvas);
+  __WEBPACK_IMPORTED_MODULE_6__util_js__["j" /* resizeCanvas */](canvas);
   init();
 });
 
@@ -479,11 +487,11 @@ const mouseInteraction = e => {
     if(__WEBPACK_IMPORTED_MODULE_6__util_js__["b" /* getDistance */](balls[i].x, balls[i].y, e.x, e.y) - balls[i].radius <= 50){
       if(balls[i].y + balls[i].radius > window.innerHeight){
         balls[i].y = window.innerHeight - (balls[i].radius) * 2;
-        balls[i].dx = __WEBPACK_IMPORTED_MODULE_6__util_js__["e" /* randInRange */](1,1.5) * __WEBPACK_IMPORTED_MODULE_6__util_js__["d" /* randInPos */]();
+        balls[i].dx = __WEBPACK_IMPORTED_MODULE_6__util_js__["f" /* randInRange */](1,1.5) * __WEBPACK_IMPORTED_MODULE_6__util_js__["e" /* randInPos */]();
         balls[i].dy -=5;
       } else if(balls[i].y - balls[i].radius < 0){
         balls[i].y = (balls[i].radius) * 2;
-        balls[i].dx = __WEBPACK_IMPORTED_MODULE_6__util_js__["e" /* randInRange */](1,1.5) * __WEBPACK_IMPORTED_MODULE_6__util_js__["d" /* randInPos */]();
+        balls[i].dx = __WEBPACK_IMPORTED_MODULE_6__util_js__["f" /* randInRange */](1,1.5) * __WEBPACK_IMPORTED_MODULE_6__util_js__["e" /* randInPos */]();
         balls[i].dy +=5;
       } else {
         balls[i].dy *= 1.2;
@@ -595,7 +603,7 @@ window.addEventListener('keydown', e => {
       if(g !== 0){
         g = 0;
       } else {
-        g = __WEBPACK_IMPORTED_MODULE_6__util_js__["e" /* randInRange */](1,2);
+        g = __WEBPACK_IMPORTED_MODULE_6__util_js__["f" /* randInRange */](1,2);
       }
       setGravity();
       break;
@@ -607,9 +615,9 @@ window.addEventListener('keydown', e => {
       audio = document.getElementById(`${Math.ceil(Math.random() * 27)}`);
       for (let i = 0; i < balls.length; i++) {
         balls[i].y = window.innerHeight / 2;
-        balls[i].x = __WEBPACK_IMPORTED_MODULE_6__util_js__["e" /* randInRange */](0 + balls[i].radius, window.innerWidth - balls[i].radius);
-        balls[i].dx = __WEBPACK_IMPORTED_MODULE_6__util_js__["e" /* randInRange */](10,20) * __WEBPACK_IMPORTED_MODULE_6__util_js__["d" /* randInPos */]();
-        balls[i].dy = __WEBPACK_IMPORTED_MODULE_6__util_js__["e" /* randInRange */](5,10) * __WEBPACK_IMPORTED_MODULE_6__util_js__["d" /* randInPos */]();
+        balls[i].x = __WEBPACK_IMPORTED_MODULE_6__util_js__["f" /* randInRange */](0 + balls[i].radius, window.innerWidth - balls[i].radius);
+        balls[i].dx = __WEBPACK_IMPORTED_MODULE_6__util_js__["f" /* randInRange */](10,20) * __WEBPACK_IMPORTED_MODULE_6__util_js__["e" /* randInPos */]();
+        balls[i].dy = __WEBPACK_IMPORTED_MODULE_6__util_js__["f" /* randInRange */](5,10) * __WEBPACK_IMPORTED_MODULE_6__util_js__["e" /* randInPos */]();
       }
       break;
     default:
@@ -637,11 +645,11 @@ window.addEventListener('keydown', e => {
 class Circle {
   constructor(c,x,y){
     this.c = c;
-    this.x = x + __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](0,100) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
-    this.y = y + __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](0,100) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
-    this.radius = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](10,50);
-    this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randomColor */]();
-    this.width = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](2,20);
+    this.x = x + __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](0,100) * __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInPos */]();
+    this.y = y + __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](0,100) * __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInPos */]();
+    this.radius = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](10,50);
+    this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["g" /* randomColor */]();
+    this.width = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](2,20);
   }
 
   draw(){
@@ -671,14 +679,14 @@ class Circle {
 
 class Line{
   constructor(c){
-    let start = __WEBPACK_IMPORTED_MODULE_0__util_js__["g" /* randomStart */]();
+    let start = __WEBPACK_IMPORTED_MODULE_0__util_js__["h" /* randomStart */]();
     this.x = start[0];
     this.y = start[1];
     this.movex = this.x;
     this.movey = this.y;
     this.c = c;
-    this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randomColor */]();
-    this.width = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](15,50);
+    this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["g" /* randomColor */]();
+    this.width = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](15,50);
   }
 
   draw(){
@@ -718,12 +726,12 @@ class Line{
 class Ball{
   constructor(c, x, y, g){
     this.c = c;
-    this.radius = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](10,25);
-    this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randomColor */]();
-    this.dy = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](2,5) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
-    this.dx = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](5,10) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
+    this.radius = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](10,25);
+    this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["i" /* reallyRandomColor */]();
+    this.dy = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](2,5) * __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInPos */]();
+    this.dx = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](5,10) * __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInPos */]();
 
-    let xpos = x + __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](0,100) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
+    let xpos = x + __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](0,100) * __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInPos */]();
 
     if(xpos - this.radius + this.dx < 0){
       xpos = Math.abs(this.radius + this.dx) * 2;
@@ -731,7 +739,7 @@ class Ball{
       xpos = Math.abs(xpos-this.radius) * 2;
     }
 
-    let ypos = y + __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](0,100) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
+    let ypos = y + __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](0,100) * __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInPos */]();
     if(ypos - this.radius + this.dy < 0){
       ypos = Math.abs(this.radius + this.dy) * 2;
     } else if(ypos + this.radius + this.dy > window.innerHeight){
@@ -871,12 +879,12 @@ class Star {
     this.rot = Math.PI / 2 * 3;
     this.x = x;
     this.y = y;
-    this.outerR = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](11,15);
-    this.innerR = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](5,10);
+    this.outerR = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](11,15);
+    this.innerR = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](5,10);
     this.spikes = 5;
     this.step = Math.PI / this.spikes;
-    this.dy = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](2,5) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
-    this.dx = __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](10,15) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
+    this.dy = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](2,5) * __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInPos */]();
+    this.dx = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](10,15) * __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInPos */]();
   }
 
   draw(){
@@ -896,13 +904,15 @@ class Star {
     }
     this.c.lineTo(this.x, this.y - this.outerR);
     this.c.closePath();
+    this.c.strokeStyle = 'black';
     this.c.fillStyle = 'yellow';
     this.c.fill();
+    this.c.stroke();
 
   }
 
   update(){
-    this.dy += __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInRange */](1,2) * __WEBPACK_IMPORTED_MODULE_0__util_js__["d" /* randInPos */]();
+    this.dy += __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](1,2) * __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInPos */]();
     this.x += this.dx;
     this.y += this.dy;
     this.draw();

@@ -31,8 +31,10 @@ class Star {
     }
     this.c.lineTo(this.x, this.y - this.outerR);
     this.c.closePath();
+    this.c.strokeStyle = 'black';
     this.c.fillStyle = 'yellow';
     this.c.fill();
+    this.c.stroke();
 
   }
 

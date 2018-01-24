@@ -71,16 +71,15 @@ const animate = () => {
       stars[i].update();
     }
 
-    if(animations.length > 15 ){
-      animations = animations.slice(8);
-    }
-
     if(balls.length > 80){
       balls = balls.slice(10);
     }
 
-    if(stars.length > 500){
-      stars = stars.slice(300);
+    for (let i = 0; i < stars.length; i++) {
+      if(Util.outOfCanvas(stars[i].x, stars[i].y)){
+        stars.splice(i,1);
+        i -= 1;
+      }
     }
   }
 };
