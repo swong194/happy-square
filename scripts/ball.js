@@ -4,7 +4,7 @@ class Ball{
   constructor(c, x, y, g){
     this.c = c;
     this.radius = Util.randInRange(10,25);
-    this.color = Util.reallyRandomColor();
+    this.color = Util.randomColor();
     this.dy = Util.randInRange(2,5) * Util.randInPos();
     this.dx = Util.randInRange(5,10) * Util.randInPos();
 

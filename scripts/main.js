@@ -319,7 +319,11 @@ window.addEventListener('keydown', e => {
       setGravity();
       break;
     case 27:
-      openMenu();
+      if(playOn === true){
+        openMenu();
+      } else {
+        closeMenu();
+      }
       audio = document.getElementById(`${Math.ceil(Math.random() * 27)}`);
       break;
     case 190:

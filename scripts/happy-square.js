@@ -70,13 +70,16 @@
 "use strict";
 const randomColor = () => {
   const color = randInArr(
-    [`#f95f2b`,
-      `#f34330`,
-      `#ea2c2c`,
-      `	#fffefe`,
-      `#81b3fd`,
-      `	#1d76fc`,
-      `	#0348b0`
+    [`#ff9a55`,
+      `#ffea6c`,
+      `#54fffb`,
+      `#e7b2ff`,
+      `#89ffcc`,
+      `#00ced1`,
+      `#ff6700`,
+      `#ff24a9`,
+      `#ffe700`,
+      `#ffffff`
     ]
   );
   return color;
@@ -92,7 +95,7 @@ const reallyRandomColor = () => {
   color += '1)';
   return color;
 };
-/* harmony export (immutable) */ __webpack_exports__["i"] = reallyRandomColor;
+/* unused harmony export reallyRandomColor */
 
 
 const randomStart = () => {
@@ -263,7 +266,7 @@ const resizeCanvas = (canvas) => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 };
-/* harmony export (immutable) */ __webpack_exports__["j"] = resizeCanvas;
+/* harmony export (immutable) */ __webpack_exports__["i"] = resizeCanvas;
 
 
 const outOfCanvas = (x,y) => {
@@ -454,14 +457,14 @@ document.addEventListener('DOMContentLoaded', () => {
   hoopButton.addEventListener('click', toggleHoop);
   const backtrackButton = document.getElementById('backtrack-button');
   backtrackButton.addEventListener('click', toggleBacktrack);
-  __WEBPACK_IMPORTED_MODULE_6__util_js__["j" /* resizeCanvas */](canvas);
+  __WEBPACK_IMPORTED_MODULE_6__util_js__["i" /* resizeCanvas */](canvas);
   document.getElementById('backtrack').volume = 1;
   Object(__WEBPACK_IMPORTED_MODULE_3__audio_js__["d" /* setAudio */])();
   openMenu();
 });
 
 window.addEventListener('resize', () => {
-  __WEBPACK_IMPORTED_MODULE_6__util_js__["j" /* resizeCanvas */](canvas);
+  __WEBPACK_IMPORTED_MODULE_6__util_js__["i" /* resizeCanvas */](canvas);
   init();
 });
 
@@ -608,7 +611,11 @@ window.addEventListener('keydown', e => {
       setGravity();
       break;
     case 27:
-      openMenu();
+      if(playOn === true){
+        openMenu();
+      } else {
+        closeMenu();
+      }
       audio = document.getElementById(`${Math.ceil(Math.random() * 27)}`);
       break;
     case 190:
@@ -727,7 +734,7 @@ class Ball{
   constructor(c, x, y, g){
     this.c = c;
     this.radius = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](10,25);
-    this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["i" /* reallyRandomColor */]();
+    this.color = __WEBPACK_IMPORTED_MODULE_0__util_js__["g" /* randomColor */]();
     this.dy = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](2,5) * __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInPos */]();
     this.dx = __WEBPACK_IMPORTED_MODULE_0__util_js__["f" /* randInRange */](5,10) * __WEBPACK_IMPORTED_MODULE_0__util_js__["e" /* randInPos */]();
 

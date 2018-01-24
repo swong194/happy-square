@@ -1,12 +1,15 @@
 export const randomColor = () => {
   const color = randInArr(
-    [`#f95f2b`,
-      `#f34330`,
-      `#ea2c2c`,
-      `	#fffefe`,
-      `#81b3fd`,
-      `	#1d76fc`,
-      `	#0348b0`
+    [`#ff9a55`,
+      `#ffea6c`,
+      `#54fffb`,
+      `#e7b2ff`,
+      `#89ffcc`,
+      `#00ced1`,
+      `#ff6700`,
+      `#ff24a9`,
+      `#ffe700`,
+      `#ffffff`
     ]
   );
   return color;
