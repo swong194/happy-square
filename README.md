@@ -4,7 +4,7 @@
 
 Happy Square is a interactive visual and audio square! Click anywhere on the screen and see what cool surprises await!
 
-<a href='http://sunnygwong.com/happy-square/'>Live Demo</a>
+<a target="_blank" href='http://sunnygwong.com/happy-square/'>Live Demo</a>
 
 # Functionality and MVPs
 -  Users can click or drag their mouse to trigger audio and visual effects
