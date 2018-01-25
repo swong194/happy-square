@@ -304,7 +304,6 @@ const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 c.globalAlpha = 0.1;
 let g = __WEBPACK_IMPORTED_MODULE_6__util_js__["f" /* randInRange */](1,2);
-
 const mouse = {};
 
 let lines = [];
@@ -497,7 +496,7 @@ window.addEventListener('click', (e) => {
   for (let i = 0; i < 2; i++) {
     const circle = new __WEBPACK_IMPORTED_MODULE_0__circle_js__["a" /* default */](c, e.x, e.y);
     circle.draw();
-    animations.push(circle);
+    circles.push(circle);
   }
 
   for (let i = 0; i < 3; i++) {
@@ -658,7 +657,7 @@ window.addEventListener('keydown', e => {
   }
   const line = new __WEBPACK_IMPORTED_MODULE_1__line_js__["a" /* default */](c);
   line.draw();
-  animations.push(line);
+  lines.push(line);
   audio.currentTime = 0;
   if(soundOn){
     audio.play();

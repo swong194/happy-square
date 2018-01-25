@@ -12,7 +12,6 @@ const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 c.globalAlpha = 0.1;
 let g = Util.randInRange(1,2);
-
 const mouse = {};
 
 let lines = [];
@@ -205,7 +204,7 @@ window.addEventListener('click', (e) => {
   for (let i = 0; i < 2; i++) {
     const circle = new Circle(c, e.x, e.y);
     circle.draw();
-    animations.push(circle);
+    circles.push(circle);
   }
 
   for (let i = 0; i < 3; i++) {
@@ -366,7 +365,7 @@ window.addEventListener('keydown', e => {
   }
   const line = new Line(c);
   line.draw();
-  animations.push(line);
+  lines.push(line);
   audio.currentTime = 0;
   if(soundOn){
     audio.play();
