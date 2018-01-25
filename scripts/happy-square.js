@@ -358,7 +358,7 @@ const animate = () => {
           if(soundOn){
             playRandomSound();
           }
-          for (let j = 0; j < 10; j++) {
+          for (let j = 0; j < 4; j++) {
             const star = new __WEBPACK_IMPORTED_MODULE_5__star_js__["a" /* default */](c, 50, window.innerHeight / 2 );
             stars.push(star);
           }
@@ -369,14 +369,14 @@ const animate = () => {
     }
 
     for (let i = 0; i < lines.length; i++) {
-      if(__WEBPACK_IMPORTED_MODULE_6__util_js__["d" /* outOfCanvas */](lines[i].x, lines[i].y)){
+      if(lines[i].x > window.innerWidth || lines[i].y > window.innerLength){
         lines.splice(i,1);
         i-=1;
       }
     }
 
     for (let i = 0; i < circles.length; i++) {
-      if(circles[i].radius > window.width * 1.5 || circles[i].radius > window.length * 1.5){
+      if(circles[i].radius > (window.innerWidth * 1.5 || window.innerLength * 1.5)){
         circles.splice(i,1);
         i-=1;
       }
