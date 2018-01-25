@@ -307,7 +307,8 @@ let g = __WEBPACK_IMPORTED_MODULE_6__util_js__["f" /* randInRange */](1,2);
 
 const mouse = {};
 
-let animations = [];
+let lines = [];
+let circles = [];
 let balls = [];
 let stars = [];
 let hoop;
@@ -327,12 +328,21 @@ const animate = () => {
   requestAnimationFrame(animate);
   if(playOn){
     c.clearRect(0, 0, innerWidth, innerHeight);
-    for (let i = 0; i < animations.length; i++) {
-      animations[i].update();
+
+    for (let i = 0; i < lines.length; i++) {
+      lines[i].update();
+    }
+
+    for (let i = 0; i < circles.length; i++) {
+      circles[i].update();
     }
 
     for (let i = 0; i < balls.length; i++) {
       balls[i].update();
+    }
+
+    for (let i = 0; i < stars.length; i++) {
+      stars[i].update();
     }
 
     for (let i = 0; i < balls.length - 1; i++) {
@@ -359,12 +369,22 @@ const animate = () => {
       hoop.update();
     }
 
-    for (let i = 0; i < stars.length; i++) {
-      stars[i].update();
+    for (let i = 0; i < lines.length; i++) {
+      if(__WEBPACK_IMPORTED_MODULE_6__util_js__["d" /* outOfCanvas */](lines[i].x, lines[i].y)){
+        lines.splice(i,1);
+        i-=1;
+      }
+    }
+
+    for (let i = 0; i < circles.length; i++) {
+      if(circles[i].radius > window.width * 1.5 || circles[i].radius > window.length * 1.5){
+        circles.splice(i,1);
+        i-=1;
+      }
     }
 
     if(balls.length > 80){
-      balls = balls.slice(10);
+      balls = balls.slice(20);
     }
 
     for (let i = 0; i < stars.length; i++) {
@@ -377,7 +397,8 @@ const animate = () => {
 };
 
 const init = () => {
-  animations =[];
+  lines = [];
+  circles =[];
   balls = [];
   stars = [];
   if(hoopOn){
