@@ -241,6 +241,9 @@ const addMouseMove = () => {
 };
 
 window.addEventListener('keydown', e => {
+  if(playOn === false){
+    closeMenu();
+  }
   let audio;
   switch (e.keyCode) {
     case 81:
@@ -345,8 +348,6 @@ window.addEventListener('keydown', e => {
     case 27:
       if(playOn === true){
         openMenu();
-      } else {
-        closeMenu();
       }
       audio = document.getElementById(`${Math.ceil(Math.random() * 27)}`);
       break;
