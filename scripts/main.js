@@ -114,12 +114,12 @@ const init = () => {
   if (window.DeviceOrientationEvent) {
     window.addEventListener('deviceorientation', (e)=>{
       if(e.beta < 0 && g > -2){
-        g -= .01;
+        g -= .1;
         for (let i = 0; i < balls.length; i++) {
           balls[i].gravity = g;
         }
       } else if (e.beta > 0 && g < 2){
-        g += .01;
+        g += .1;
         for (var i = 0; i < balls.length; i++) {
           balls[i].gravity = g;
         }
