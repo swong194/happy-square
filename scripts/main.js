@@ -116,9 +116,9 @@ const init = () => {
       if( (e.beta >= -10) && (e.beta <= 10) || (e.beta >= 170 && e.beta <= 180) || (e.beta <= -170)){
         g = 0;
       } else if( e.beta > 0 && g <= 0 ){
-        g = Util.randInRange(1,2);
-      } else if( e.beta < 0 && g >= 0 ){
         g = -Util.randInRange(1,2);
+      } else if( e.beta < 0 && g >= 0 ){
+        g = Util.randInRange(1,2);
       }
       for (let i = 0; i < balls.length; i++) {
         balls[i].gravity = g;
