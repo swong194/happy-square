@@ -115,9 +115,9 @@ const init = () => {
     window.addEventListener('deviceorientation', (e)=>{
       if( (e.beta >= -10) && (e.beta <= 10) ){
         g = 0;
-      } else if( e.beta < 0 && g > 0 ){
+      } else if( e.beta < 0 && g >= 0 ){
         g = Util.randInRange(1,2);
-      } else if( e.beta > 0 && g < 0 ){
+      } else if( e.beta > 0 && g <= 0 ){
         g = -Util.randInRange(1,2);
       }
       for (let i = 0; i < balls.length; i++) {
