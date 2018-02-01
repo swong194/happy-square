@@ -211,6 +211,20 @@ if (window.DeviceOrientationEvent) {
   }, false);
 }
 
+window.addEventListener('devicemotion', (e)=>{
+  if(e.acceleration.y < 0 && g > -2){
+    g -= .01;
+    for (let i = 0; i < balls.length; i++) {
+      balls[i].gravity = g;
+    }
+  } else if (e.acceleration.y > 0 && g < 2){
+    g += .01;
+    for (var i = 0; i < balls.length; i++) {
+      balls[i].gravity = g;
+    }
+  }
+}, false);
+
 window.addEventListener('resize', () => {
   Util.resizeCanvas(canvas);
   init();
