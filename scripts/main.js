@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
   openMenu();
 });
 
-document.addEventListener('deviceorientation', (e)=>{
+window.addEventListener('deviceorientation', (e)=>{
   if(e.gamma < 0 && g > -2){
     g -= .01;
     for (let i = 0; i < balls.length; i++) {
@@ -207,7 +207,7 @@ document.addEventListener('deviceorientation', (e)=>{
       balls[i].gravity = g;
     }
   }
-});
+}, true);
 
 window.addEventListener('resize', () => {
   Util.resizeCanvas(canvas);
