@@ -195,19 +195,21 @@ document.addEventListener('DOMContentLoaded', () => {
   openMenu();
 });
 
-window.addEventListener('deviceorientation', (e)=>{
-  if(e.gamma < 0 && g > -2){
-    g -= .01;
-    for (let i = 0; i < balls.length; i++) {
-      balls[i].gravity = g;
+if (window.DeviceOrientationEvent) {
+  window.addEventListener('deviceorientation', (e)=>{
+    if(e.beta < 0 && g > -2){
+      g -= .01;
+      for (let i = 0; i < balls.length; i++) {
+        balls[i].gravity = g;
+      }
+    } else if (e.beta > 0 && g < 2){
+      g += .01;
+      for (var i = 0; i < balls.length; i++) {
+        balls[i].gravity = g;
+      }
     }
-  } else if (e.gamma > 0 && g < 2){
-    g += .01;
-    for (var i = 0; i < balls.length; i++) {
-      balls[i].gravity = g;
-    }
-  }
-}, true);
+  }, false);
+}
 
 window.addEventListener('resize', () => {
   Util.resizeCanvas(canvas);
