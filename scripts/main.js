@@ -195,6 +195,20 @@ document.addEventListener('DOMContentLoaded', () => {
   openMenu();
 });
 
+document.addEventListener('deviceorientation', (e)=>{
+  if(e.gamma < 0 && g > -2){
+    g -= .01;
+    for (let i = 0; i < balls.length; i++) {
+      balls[i].gravity = g;
+    }
+  } else if (e.gamma > 0 && g < 2){
+    g += .01;
+    for (var i = 0; i < balls.length; i++) {
+      balls[i].gravity = g;
+    }
+  }
+});
+
 window.addEventListener('resize', () => {
   Util.resizeCanvas(canvas);
   init();
