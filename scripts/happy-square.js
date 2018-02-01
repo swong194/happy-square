@@ -403,6 +403,24 @@ const init = () => {
   if(hoopOn){
     hoop = new __WEBPACK_IMPORTED_MODULE_4__hoop_js__["a" /* default */](c);
   }
+  if (window.DeviceOrientationEvent) {
+    window.addEventListener('deviceorientation', (e)=>{
+      if(Math.abs(g) < 2){
+        g += e.beta * .1;
+      }
+      if(e.beta < 0 && g < 2){
+        g = Math.abs(g) + .1;
+        for (let i = 0; i < balls.length; i++) {
+          balls[i].gravity = g;
+        }
+      } else if (e.beta > 0 && g < 2){
+        g = -Math.abs(g) + .1 ;
+        for (let i = 0; i < balls.length; i++) {
+          balls[i].gravity = g;
+        }
+      }
+    });
+  }
 };
 
 const playRandomSound = () => {

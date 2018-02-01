@@ -113,9 +113,19 @@ const init = () => {
   }
   if (window.DeviceOrientationEvent) {
     window.addEventListener('deviceorientation', (e)=>{
-      for (let i = 0; i < balls.length; i++) {
-        balls[i].dy = Math.round(e.beta);
-        balls[i].dx = Math.round(e.gamma);
+      if(Math.abs(g) < 2){
+        g += e.beta * .1;
+      }
+      if(e.beta < 0 && g < 2){
+        g = Math.abs(g) + .1;
+        for (let i = 0; i < balls.length; i++) {
+          balls[i].gravity = g;
+        }
+      } else if (e.beta > 0 && g < 2){
+        g = -Math.abs(g) + .1 ;
+        for (let i = 0; i < balls.length; i++) {
+          balls[i].gravity = g;
+        }
       }
     });
   }
