@@ -117,8 +117,8 @@ const init = () => {
         g=0;
       } else if( e.beta < 0 && Math.abs(g) < 2 ){
         g = Math.abs(g) + .1;
-      } else {
-        g = -Math.abs(g) + .1 ;
+      } else if( e.beta > 0 && Math.abs(g) < 2){
+        g = -Math.abs(g) - .1 ;
       }
       for (let i = 0; i < balls.length; i++) {
         balls[i].gravity = g;
