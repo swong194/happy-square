@@ -195,8 +195,10 @@ document.addEventListener('DOMContentLoaded', () => {
   openMenu();
 });
 
-if (window.DeviceOrientationEvent) {
+// if (window.DeviceOrientationEvent) {
+//   console.log('added orientation');
   window.addEventListener('deviceorientation', (e)=>{
+    console.log('added orientation');
     if(e.beta < 0 && g > -2){
       g -= .01;
       for (let i = 0; i < balls.length; i++) {
@@ -209,21 +211,25 @@ if (window.DeviceOrientationEvent) {
       }
     }
   }, false);
-}
+// }
 
-window.addEventListener('devicemotion', (e)=>{
-  if(e.acceleration.y < 0 && g > -2){
-    g -= .01;
-    for (let i = 0; i < balls.length; i++) {
-      balls[i].gravity = g;
+// if(window.DeviceMotionEvent){
+//   console.log('added motion');
+  window.addEventListener('devicemotion', (e)=>{
+    console.log('added motion');
+    if(e.acceleration.y < 0 && g > -2){
+      g -= .01;
+      for (let i = 0; i < balls.length; i++) {
+        balls[i].gravity = g;
+      }
+    } else if (e.acceleration.y > 0 && g < 2){
+      g += .01;
+      for (var i = 0; i < balls.length; i++) {
+        balls[i].gravity = g;
+      }
     }
-  } else if (e.acceleration.y > 0 && g < 2){
-    g += .01;
-    for (var i = 0; i < balls.length; i++) {
-      balls[i].gravity = g;
-    }
-  }
-}, false);
+  }, false);
+// }
 
 window.addEventListener('resize', () => {
   Util.resizeCanvas(canvas);
