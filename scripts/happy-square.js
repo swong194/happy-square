@@ -405,6 +405,7 @@ const init = () => {
   }
   if (window.DeviceOrientationEvent) {
     window.addEventListener('deviceorientation', (e)=>{
+      alert(e.beta);
       if( (e.beta >= -10) && (e.beta <= 10) ){
         g=0;
       } else if( e.beta < 0 && g < 0 ){
