@@ -407,10 +407,10 @@ const init = () => {
     window.addEventListener('deviceorientation', (e)=>{
       if( (e.beta >= -10) && (e.beta <= 10) ){
         g=0;
-      } else if( e.beta < 0 && Math.abs(g) < 2 ){
-        g = Math.abs(g) + .1;
-      } else if( e.beta > 0 && Math.abs(g) < 2){
-        g = -Math.abs(g) - .1 ;
+      } else if( e.beta < 0 && g < 0 ){
+        g = __WEBPACK_IMPORTED_MODULE_6__util_js__["f" /* randInRange */](1,2);
+      } else if( e.beta > 0 && g > 0 ){
+        g = -g ;
       }
       for (let i = 0; i < balls.length; i++) {
         balls[i].gravity = g;
