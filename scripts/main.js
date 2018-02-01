@@ -113,16 +113,8 @@ const init = () => {
   }
   if (window.DeviceOrientationEvent) {
     window.addEventListener('deviceorientation', (e)=>{
-      if(e.beta < 0 && g < 2){
-        g = Math.abs(g) + .1;
-        for (let i = 0; i < balls.length; i++) {
-          balls[i].gravity = g;
-        }
-      } else if (e.beta > 0 && g < 2){
-        g = -Math.abs(g) + .1 ;
-        for (var i = 0; i < balls.length; i++) {
-          balls[i].gravity = g;
-        }
+      if(Math.abs(g) < 2){
+        g += e.beta * .1;
       }
     });
   }
